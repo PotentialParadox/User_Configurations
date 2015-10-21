@@ -1,12 +1,12 @@
 # User_Configurations
-This repository contains my personal user configurations for a variety of different applications. For those who haven't used any of the following, I believe that these are very good starting points. Note that I personally did not make any of the following plugins and take no credit for them. I've created hyperlinks to the creators github accounts, for more information.
+This repository contains my personal user configurations for a variety of different applications. For those who haven't used any of the following, I believe that these are very good starting points. Note that I personally did not make any of the following plugins and take no credit for them. I've created hyperlinks to the creators github accounts, for more information, please follow thoses.
 
 # Install
 These configuration require the installation of vim and tmux. Note that most servers have these already available.
 
-For ubuntu
+For ubuntu, you will need to install curl as well
 ```
-sudo apt-get install vim tmux
+sudo apt-get install vim tmux curl
 ```
 For mac, <a href="brew.sh">Homebrew</a> will be used. In the following replace username with your username.
 ```
@@ -17,7 +17,7 @@ brew install tmux
 ```
 Once vim and tmux is installed, run the following
 ```
-cp ~/.vimrc ~/.vimrc.bak && cp ~/.tmux.conf ~/.tmux.conf.bak && git clone https://github.com/PotentialParadox/User_Configurations && cp User_Configurations/{.vimrc,.tmux.conf} ~/
+git clone https://github.com/PotentialParadox/User_Configurations && ~/User_Configurations/install.sh
 ```
 
 # VIM
@@ -36,3 +36,4 @@ Leader key is defaulted to the '\' key.
 <a href="https://github.com/Shougo/neocomplete.vim">NeoComplete</a> - keyword completion
 
 <a href="https://github.com/Rip-Rip/clang_complete">ClangComplete</a> keyword completion using clang for c and c++. Note that if you don't want to install clang, you'd need to comment out lines 25-32.
+
