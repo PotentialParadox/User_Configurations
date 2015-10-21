@@ -15,6 +15,7 @@ Plug 'flazz/vim-colorschemes'
 Plug 'altercation/vim-colors-solarized'
 Plug 'davidhalter/jedi-vim'
 Plug 'klen/python-mode'
+
 call plug#end()
 
 set background=light
@@ -39,7 +40,6 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTree
 map <C-c> :NERDTreeToggle<CR>
 
 " Basic key mapping
-:let mapleader = "-"
 map <F9> :vsplit<CR>
 map <F8> :split<CR>
 map <C-s> :w!<CR>
@@ -64,3 +64,6 @@ set softtabstop=2
 "Set folding
 set foldmethod=indent
 set nofoldenable
+
+"Allow copy pasting across monitors
+set clipboard=unnamed
