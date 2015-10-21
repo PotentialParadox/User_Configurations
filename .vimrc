@@ -63,3 +63,6 @@ set nofoldenable
 
 "Allow copy pasting across monitors
 set clipboard=unnamed
+
+"Needed for Airline to work
+set laststatus=2
