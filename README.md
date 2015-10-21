@@ -47,7 +47,13 @@ Vim is the successor to vi, a very keyboard shortcut optimized editor. I've modi
 <a href="https://github.com/terryma/vim-multiple-cursors">VimMultipleCursors</a> Activated with Ctrl-n. Creates multiple cursors for each duplicate of the word. To back-peddle use the command Ctrl-p.
 
 <a href="https://github.com/klen/python-mode">PythonMode</a> Makes vim a python IDE. Please follow the link for more information
-## User Defined Vim Keys
+
+## Common Plugin Shortcuts
+Function                        | Key 
+------------------------------- | -------
+NerdCommenter - set as commment | \-cc
+
+## User Defined Vim Shortcuts
 Function         | Key 
 ---------------- | -------
 Vertical Split   | F9
@@ -57,16 +63,16 @@ Quick Save-Close | Ctrl-q
 Format c-code    | F8
 # TMUX
 Tmux is very similar to the now sort of depricated gnu-screen. Its used to split the terminal into multiple panes within the terminal. I've included some of the most useful commands
-
+## TMUX Shortcuts
 Function             | Key 
 -------------------- | ------------------------------------------
-leader               | Ctrl-b
-move to upper pane   | Ctrl-k
-move to lower pane   | Ctrl-j
-move to right pane   | Ctrl-;
-move to left pane    | Ctrl-h
-split vertically     | leader-%
-split horizontally   | leader-"
-close                | leader-x
-resize a pane        | leader:resize-pane -/+(U,D,R,L) 'amount'
+Leader               | Ctrl-b
+Move to upper pane   | Ctrl-k
+Move to lower pane   | Ctrl-j
+Move to right pane   | Ctrl-;
+Move to left pane    | Ctrl-h
+Split vertically     | leader-%
+Split horizontally   | leader-"
+Close                | leader-x
+Resize a pane        | leader:resize-pane -/+(U,D,R,L) 'amount'
 
