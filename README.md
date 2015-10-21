@@ -2,19 +2,16 @@
 This repository contains my personal user configurations for a variety of different applications. For those who haven't used any of the following, I believe that these are very good starting points. Note that I personally did not make any of the following plugins and take no credit for them. I've created hyperlinks to the creators github accounts, for more information.
 
 # Install
-These configuration require the installation of vim and tmux. 
+These configuration require the installation of vim and tmux. Note that most servers have these already available.
 
 For ubuntu
 ```
 sudo apt-get install vim tmux
 ```
-For mac, <a href="brew.sh">Homebrew</a> will be used.
+For mac, <a href="brew.sh">Homebrew</a> will be used. In the following replace username with your username.
 ```
 brew install vim
 brew uninstall libevent
-```
-in the following replace username with your username
-```
 sudo chown -R username /usr/local
 brew install tmux
 ```
