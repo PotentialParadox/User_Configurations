@@ -2,8 +2,8 @@
 
 call plug#begin()
 Plug 'scrooloose/nerdtree'
-Plug 'tpope/vim-fugitive'
 Plug 'kien/ctrlp.vim'
+Plug 'tpope/vim-fugitive'
 Plug 'bling/vim-airline'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/syntastic'
