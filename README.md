@@ -58,7 +58,7 @@ Format c-code    | F8
 # TMUX
 Tmux is very similar to the now sort of depricated gnu-screen. Its used to split the terminal into multiple panes within the terminal. I've included some of the most useful commands
 Function             | Key 
--------------------- | -------
+-------------------- | ------------------------------------------
 leader               | Ctrl-b
 move to upper pane   | Ctrl-k
 move to lower pane   | Ctrl-j
