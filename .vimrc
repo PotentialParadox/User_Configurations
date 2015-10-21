@@ -11,11 +11,7 @@ Plug 'Shougo/neocomplete.vim'
 Plug 'Rip-Rip/clang_complete'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'flazz/vim-colorschemes'
-Plug 'altercation/vim-colors-solarized'
-Plug 'davidhalter/jedi-vim'
 Plug 'klen/python-mode'
-
 call plug#end()
 
 set background=light

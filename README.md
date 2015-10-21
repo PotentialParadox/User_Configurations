@@ -19,6 +19,11 @@ Once vim and tmux is installed, run the following
 ```
 git clone https://github.com/PotentialParadox/User_Configurations && ~/User_Configurations/install.sh
 ```
+Open vim, (ignore any initial errors for now) and type in the command
+```
+PlugInstall
+```
+You're done.
 
 # VIM
 Leader key is defaulted to the '\' key.
@@ -33,7 +38,12 @@ Leader key is defaulted to the '\' key.
 
 <a href="https://github.com/scrooloose/syntastic">Syntastic</a> - An very good syntax checker. However, it will only check after a save. Note that if you don't want to install clang, you'd need to comment out Clang_Complete and Syntastic along with their corresponding options.
 
-<a href="https://github.com/Shougo/neocomplete.vim">NeoComplete</a> - keyword completion
+<a href="https://github.com/Shougo/neocomplete.vim">NeoComplete</a> - Keyword completion
 
-<a href="https://github.com/Rip-Rip/clang_complete">ClangComplete</a> keyword completion using clang for c and c++. Note that if you don't want to install clang, you'd need to comment out lines 25-32.
+<a href="https://github.com/Rip-Rip/clang_complete">ClangComplete</a> Keyword completion using clang for c and c++. Note that if you don't want to install clang, you'd need to comment out lines 25-32.
 
+<a href="https://github.com/christoomey/vim-tmux-navigator">vim-tmux-navigator</a> Allows for the seemless integration of vim and tmux.
+
+<a href="https://github.com/terryma/vim-multiple-cursors">vim-multiple-cursors</a> Activated with Ctrl-n. Creates multiple cursors for each duplicate of the word. To back-peddle use the command Ctrl-p.
+
+<a href="https://github.com/klen/python-mode">python-mode</a> Makes vim a python IDE. Please follow the link for more information
