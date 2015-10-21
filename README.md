@@ -26,7 +26,7 @@ PlugInstall
 You're done.
 
 # VIM
-Leader key is defaulted to the '\' key.
+Vim is the successor to vi, a very keyboard shortcut optimized editor. I've modified it with a couple of plugins.
 ## Plugins
 <a href="https://github.com/scrooloose/nerdtree">NerdTree</a> - Activated by Ctrl-c. Brings up a navigations pane. Navigate by using Ctrl+(h,j,k,l). Useful when you don't quite know the contents of the program you're working on. If you do know the file name that you're looking for, I reccommend using Ctrl-p instead.  
 
@@ -47,7 +47,7 @@ Leader key is defaulted to the '\' key.
 <a href="https://github.com/terryma/vim-multiple-cursors">VimMultipleCursors</a> Activated with Ctrl-n. Creates multiple cursors for each duplicate of the word. To back-peddle use the command Ctrl-p.
 
 <a href="https://github.com/klen/python-mode">PythonMode</a> Makes vim a python IDE. Please follow the link for more information
-## User Defined Keys
+## User Defined Vim Keys
 Function         | Key 
 ---------------- | -------
 Vertical Split   | F9
@@ -55,4 +55,17 @@ Horizontal Split | F8
 Quick Save       | Ctrl-s
 Quick Save-Close | Ctrl-q
 Format c-code    | F8
+# TMUX
+Tmux is very similar to the now sort of depricated gnu-screen. Its used to split the terminal into multiple panes within the terminal. I've included some of the most useful commands
+Function             | Key 
+-------------------- | -------
+leader               | Ctrl-b
+move to upper pane   | Ctrl-k
+move to lower pane   | Ctrl-j
+move to right pane   | Ctrl-;
+move to left pane    | Ctrl-h
+split vertically     | leader-%
+split horizontally   | leader-"
+close                | leader-x
+resize a pane        | leader:resize-pane -/+(U,D,R,L) 'amount'
 
