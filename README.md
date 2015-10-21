@@ -50,8 +50,17 @@ Vim is the successor to vi, a very keyboard shortcut optimized editor. I've modi
 
 ## Common Plugin Shortcuts
 Function                        | Key 
-------------------------------- | -------
-NerdCommenter - set as commment | \-cc
+------------------------------- | ----------------
+leader                          | \
+NerdCommenter - set as commment | leader-cc
+NerdCommenter - unset comment   | leader-ci
+Ctrl-p - open search            | Ctrl-p
+Ctrl-p - move up/down           | Ctrl-k/j
+NerdTree - open search          | Ctrl-c
+NerdTree - move up/down/l/r     | Ctrl-k/j/h/;
+Code Completion                 | Ctrl-n in insert
+Multiple Cursors - select       | Ctrl-n in normal
+Multiple Cursors - deselect     | Ctrl-p
 
 ## User Defined Vim Shortcuts
 Function         | Key 
