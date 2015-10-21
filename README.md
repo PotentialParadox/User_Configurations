@@ -3,6 +3,7 @@ This repository contains my personal user configurations for a variety of differ
 
 # Install
 These configuration require the installation of vim and tmux. 
+
 For ubuntu
 ```
 sudo apt-get install vim tmux
@@ -18,7 +19,9 @@ sudo chown -R username /usr/local
 brew install tmux
 ```
 Once vim and tmux is installed, run the following
-
+```
+cp ~/.vimrc ~/.vimrc.bak && cp ~/.tmux.conf ~/.tmux.conf.bak && git clone https://github.com/PotentialParadox/User_Configurations && cp User_Configurations/{.vimrc,.tmux.conf} ~/
+```
 
 # VIM
 Leader key is defaulted to the '\' key.
