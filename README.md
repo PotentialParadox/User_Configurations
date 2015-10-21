@@ -2,6 +2,10 @@
 This repository contains my personal user configurations for a variety of different applications. For those who haven't used any of the following, I believe that these are very good starting points. Note that I personally did not make any of the following plugins and take no credit for them. I've created hyperlinks to the creators github accounts, for more information.
 
 # Install
+These configuration require the installation of vim and tmux. For ubuntu simply use
+'''
+sudo apt-get install vim tmux
+'''
 This will create a backup of your current .vimrc and .tmux.conf files, and replace them with the ones included.
 
 # VIM
