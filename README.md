@@ -57,7 +57,7 @@ NerdCommenter - unset comment   | leader-ci
 Ctrl-p - open search            | Ctrl-p
 Ctrl-p - move up/down           | Ctrl-k/j
 NerdTree - open search          | Ctrl-c
-NerdTree - move up/down/l/r     | Ctrl-k/j/h/;
+NerdTree - move up/down/l/r     | k/j/h/;
 Code Completion                 | Ctrl-n in insert
 Multiple Cursors - select       | Ctrl-n in normal
 Multiple Cursors - deselect     | Ctrl-p
@@ -65,9 +65,9 @@ Multiple Cursors - deselect     | Ctrl-p
 ## User Defined Vim Shortcuts
 Function         | Key 
 ---------------- | -------
-Vertical Split   | F9
-Horizontal Split | F8
-Quick Save       | Ctrl-s
+Vertical Split   | leader-v
+Horizontal Split | leader-h
+Quick Save       | leader-s
 Quick Save-Close | Ctrl-q
 Format c-code    | F8
 # TMUX
