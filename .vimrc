@@ -36,11 +36,10 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTree
 map <C-c> :NERDTreeToggle<CR>
 
 " Basic key mapping
-map <F9> :vsplit<CR>
-map <F8> :split<CR>
-map <C-s> :w!<CR>
-map <C-q> :wq!<CR>
+nnoremap <leader>v :vsplit<CR>
+nnoremap <leader>h :split<CR>
 map <F8> :%!astyle<CR>
+nnoremap <leader>s :w!<CR>
 
 "Close annoying buffer window
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
@@ -66,3 +65,6 @@ set clipboard=unnamed
 
 "Needed for Airline to work
 set laststatus=2
+
+"Enable mouse scrolling
+:set mouse=a
