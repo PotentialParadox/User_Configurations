@@ -12,6 +12,8 @@ Plug 'Rip-Rip/clang_complete'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'klen/python-mode'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-repeat'
 call plug#end()
 
 set background=light
@@ -40,6 +42,7 @@ nnoremap <leader>v :vsplit<CR>
 nnoremap <leader>h :split<CR>
 map <F8> :%!astyle<CR>
 nnoremap <leader>s :w!<CR>
+nnoremap <leader>f :set spell!<CR>
 
 "Close annoying buffer window
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
@@ -68,3 +71,9 @@ set laststatus=2
 
 "Enable mouse scrolling
 :set mouse=a
+
+"Enable spellcheck
+set nospell spelllang=en_us
+
+"Enable '.' in visual mode
+vnoremap . :norm.<CR>
