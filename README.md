@@ -28,7 +28,12 @@ You're done.
 # VIM
 Vim is the successor to vi, a very keyboard shortcut optimized editor. I've modified it with a couple of plugins.
 ## Plugins
-<a href="https://github.com/scrooloose/nerdtree">NerdTree</a> - Activated by Ctrl-c. Brings up a navigations pane. Navigate by using Ctrl+(h,j,k,l). Useful when you don't quite know the contents of the program you're working on. If you do know the file name that you're looking for, I reccommend using Ctrl-p instead.  
+<a href="https://github.com/scrooloose/nerdtree">NerdTree</a> - 
+Activated by Ctrl-c. 
+Brings up a navigations pane. 
+Navigate by using Ctrl+(h,j,k,l). 
+Useful when you don't quite know the contents of the program you're working on. 
+If you do know the file name that you're looking for, I reccommend using Ctrl-p instead.  
 
 <a href="https://github.com/kien/ctrlp.vim">Ctrl-p</a> - Activated by Ctrl-p. Your bread and butter when it comes to navigation. Simply type the file name and hit enter to quickly jump between files
 
