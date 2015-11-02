@@ -104,10 +104,14 @@ Function         | Key
 Vertical Split   | leader-v
 Horizontal Split | leader-h
 Quick Save       | leader-s
-Quick Save-Close | Ctrl-q
-Format c-code    | F8
+Quick Save-Close | leader-q
+SpellCheck Toggle| leader-f
+
 # TMUX
-Tmux is very similar to the now sort of depricated gnu-screen. Its used to split the terminal into multiple panes within the terminal. I've included some of the most useful commands
+Tmux is very similar to the now sort of depricated gnu-screen. 
+Its used to split the terminal into multiple panes within the terminal. 
+I've included some of the most useful commands
+
 ## TMUX Shortcuts
 Function             | Key 
 -------------------- | ------------------------------------------

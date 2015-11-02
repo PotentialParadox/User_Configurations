@@ -42,6 +42,7 @@ nnoremap <leader>v :vsplit<CR>
 nnoremap <leader>h :split<CR>
 map <F8> :%!astyle<CR>
 nnoremap <leader>s :w!<CR>
+nnoremap <leader>q :wq!<CR>
 nnoremap <leader>f :set spell!<CR>
 
 "Close annoying buffer window
