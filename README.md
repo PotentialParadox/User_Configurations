@@ -93,6 +93,15 @@ To back-peddle use the command Ctrl-p.
 Makes vim a python IDE. 
 Please follow the link for more information
 
+<a href="https://github.com/tpope/vim-surround">VimSurround</a>
+Tag controller, most useful for html
+
+<a href="https://github.com/tpope/vim-repeat">VimRepeat</a>
+Adds more power to the '.' command
+
+<a href="https://github.com/benmills/vimux">Vimux</a>
+Creates an alternative way to interact with tmux
+
 ## Common Plugin Shortcuts
 Function                        | Key 
 ------------------------------- | ----------------
@@ -106,6 +115,8 @@ NerdTree - move up/down/l/r     | k/j/h/;
 Code Completion                 | Ctrl-n in insert
 Multiple Cursors - select       | Ctrl-n in normal
 Multiple Cursors - deselect     | Ctrl-p
+Vimux - open terminal           | leader-t
+Vimux - run last command        | leader-r
 
 ## User Defined Vim Shortcuts
 Function         | Key 
