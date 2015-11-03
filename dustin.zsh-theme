@@ -1,7 +1,7 @@
 # Clean, simple, compatible and meaningful.
 # Tested on Linux, Unix and Windows under ANSI colors.
 # It is recommended to use with a dark background and the font Inconsolata.
-# Colors: black, red, green, yellow, *blue, magenta, cyan, and white.
+# Colors: black, red, green, black, *blue, magenta, cyan, and white.
 # 
 # http://ysmood.org/wp/2013/03/my-ys-terminal-theme/
 # Mar 2013 ys
@@ -51,7 +51,7 @@ ys_hg_prompt_info() {
 PROMPT="
 %{$fg[green]%}$(box_name) \
 %{$fg[white]%}in \
-%{$terminfo[bold]$fg[yellow]%}${current_dir}%{$reset_color%}\
+%{$terminfo[bold]$fg[black]%}${current_dir}%{$reset_color%}\
 ${hg_info}\
 ${git_info} \
 %{$fg[white]%}[%*]
@@ -60,11 +60,11 @@ ${git_info} \
 if [[ "$USER" == "root" ]]; then
 PROMPT="
 %{$terminfo[bold]$fg[blue]%}#%{$reset_color%} \
-%{$bg[yellow]%}%{$fg[cyan]%}%n%{$reset_color%} \
+%{$bg[black]%}%{$fg[cyan]%}%n%{$reset_color%} \
 %{$fg[white]%}at \
 %{$fg[green]%}$(box_name) \
 %{$fg[white]%}in \
-%{$terminfo[bold]$fg[yellow]%}${current_dir}%{$reset_color%}\
+%{$terminfo[bold]$fg[black]%}${current_dir}%{$reset_color%}\
 ${hg_info}\
 ${git_info} \
 %{$fg[white]%}[%*]

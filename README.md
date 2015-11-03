@@ -1,14 +1,23 @@
-# User_Configurations
+# User\_Configurations
 This repository contains my personal user configurations for a variety of different applications. 
 For those who haven't used any of the following, I believe that these are very good starting points. 
 Note that I personally did not make any of the following plugins and take no credit for them. 
-I've created hyperlinks to the creators github accounts, for more information, please follow thoses.
+I've created hyperlinks to the creators github accounts. 
+For more information, please follow thoses.
 
 # Install
 These configuration require the installation of vim and tmux. 
 Note that most servers have these already available.
 
-For ubuntu, you will need to install curl as well
+## One step (installs zsh)
+For mac and ubuntu copy and paste this into your terminal
+```
+git clone https://github.com/PotentialParadox/User\_Configurations && ~/User\_Configurations/full_install.sh
+```
+
+## Two step (does not install zsh)
+### Dependencies
+For ubuntu, you only need to copy and paste this into your terminal
 ```
 sudo apt-get install vim tmux curl
 ```
@@ -20,9 +29,10 @@ brew uninstall libevent
 sudo chown -R username /usr/local
 brew install tmux
 ```
+### Install configurations 
 Once vim and tmux is installed, run the following
 ```
-git clone https://github.com/PotentialParadox/User_Configurations && ~/User_Configurations/install.sh
+git clone https://github.com/PotentialParadox/User\_Configurations && ~/User\_Configurations/install.sh
 ```
 Open vim, (ignore any initial errors for now) and type in the command
 ```
@@ -84,6 +94,15 @@ To back-peddle use the command Ctrl-p.
 Makes vim a python IDE. 
 Please follow the link for more information
 
+<a href="https://github.com/tpope/vim-surround">VimSurround</a>
+Tag controller, most useful for html
+
+<a href="https://github.com/tpope/vim-repeat">VimRepeat</a>
+Adds more power to the '.' command
+
+<a href="https://github.com/benmills/vimux">Vimux</a>
+Creates an alternative way to interact with tmux
+
 ## Common Plugin Shortcuts
 Function                        | Key 
 ------------------------------- | ----------------
@@ -97,6 +116,8 @@ NerdTree - move up/down/l/r     | k/j/h/;
 Code Completion                 | Ctrl-n in insert
 Multiple Cursors - select       | Ctrl-n in normal
 Multiple Cursors - deselect     | Ctrl-p
+Vimux - open terminal           | leader-t
+Vimux - run last command        | leader-r
 
 ## User Defined Vim Shortcuts
 Function         | Key 

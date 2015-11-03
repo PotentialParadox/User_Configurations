@@ -29,18 +29,16 @@ dist=`grep DISTRIB_ID /etc/*-release | awk -F '=' '{print $2}'`
 
 if [ "$dist" == "Ubuntu" ]; then
   sudo apt-get update -y
-  sudo apt-get upgrade -y
   sudo apt-get install -y vim tmux curl zsh
   if [ ! $SHELL = /usr/bin/zsh ]; then
     echo "zsh installed"
     sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
     sudo chsh -s $(which zsh) $(whoami)
   fi
-  cp ~/User_Configurations/dustin.zsh-theme ~/.oh-my-zsh/themes
+  cp ~/User_Configurations/dustin.zsh-theme ~/.oh-my-zsh/themes/
+  python zsh_config.py
   vim -c "PlugInstall"
 fi
-
-python zsh_config.py
 
 
 if [ ! -f ~/.vim/autoload/plug.vim ]; then
