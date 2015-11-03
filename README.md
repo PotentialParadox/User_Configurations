@@ -1,4 +1,4 @@
-# User_Configurations
+# User\_Configurations
 This repository contains my personal user configurations for a variety of different applications. 
 For those who haven't used any of the following, I believe that these are very good starting points. 
 Note that I personally did not make any of the following plugins and take no credit for them. 
@@ -8,7 +8,15 @@ I've created hyperlinks to the creators github accounts, for more information, p
 These configuration require the installation of vim and tmux. 
 Note that most servers have these already available.
 
-For ubuntu, you will need to install curl as well
+## One step (installs zsh)
+For mac and ubuntu copy and paste this into your terminal
+```
+git clone https://github.com/PotentialParadox/User\_Configurations && ~/User\_Configurations/install.sh
+```
+
+## Two step (does not install zsh)
+### Dependencies
+For ubuntu, you only need to copy and paste this into your terminal
 ```
 sudo apt-get install vim tmux curl
 ```
@@ -20,9 +28,10 @@ brew uninstall libevent
 sudo chown -R username /usr/local
 brew install tmux
 ```
+### Install configurations 
 Once vim and tmux is installed, run the following
 ```
-git clone https://github.com/PotentialParadox/User_Configurations && ~/User_Configurations/install.sh
+git clone https://github.com/PotentialParadox/User\_Configurations && ~/User\_Configurations/install.sh
 ```
 Open vim, (ignore any initial errors for now) and type in the command
 ```
