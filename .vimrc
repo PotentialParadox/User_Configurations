@@ -47,7 +47,7 @@ nnoremap <leader>q :wq!<CR>
 nnoremap <leader>f :set spell!<CR>
 
 "Vimux
-nnoremap <leader>t :VimuxRunCommand<CR>
+nnoremap <leader>t :VimuxPromptCommand<CR>
 nnoremap <leader>r :VimuxRunLastCommand<CR>
 
 "Close annoying buffer window
