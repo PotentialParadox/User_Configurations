@@ -1,7 +1,7 @@
 # Clean, simple, compatible and meaningful.
 # Tested on Linux, Unix and Windows under ANSI colors.
 # It is recommended to use with a dark background and the font Inconsolata.
-# Colors: black, red, black, black, *blue, magenta, cyan, and white.
+# Colors: black, black, black, black, *blue, magenta, cyan, and black.
 # 
 # http://ysmood.org/wp/2013/03/my-ys-terminal-theme/
 # Mar 2013 ys
@@ -15,10 +15,10 @@ function box_name {
 local current_dir='${PWD/#$HOME/~}'
 
 # VCS
-YS_VCS_PROMPT_PREFIX1=" %{$fg[white]%}on%{$reset_color%} "
+YS_VCS_PROMPT_PREFIX1=" %{$fg[black]%}on%{$reset_color%} "
 YS_VCS_PROMPT_PREFIX2=":%{$fg[cyan]%}"
 YS_VCS_PROMPT_SUFFIX="%{$reset_color%}"
-YS_VCS_PROMPT_DIRTY=" %{$fg[red]%}x"
+YS_VCS_PROMPT_DIRTY=" %{$fg[black]%}x"
 YS_VCS_PROMPT_CLEAN=" %{$fg[green]%}o"
 
 # Git info.
@@ -47,26 +47,26 @@ ys_hg_prompt_info() {
 # Prompt format: \n # USER at MACHINE in DIRECTORY on git:BRANCH STATE [TIME] \n $ 
 ## %{$terminfo[bold]$fg[blue]%}#%{$reset_color%} \
 # %{$fg[cyan]%}%n \
-# %{$fg[white]%}at \
+# %{$fg[black]%}at \
 PROMPT="
 %{$fg[green]%}$(box_name) \
-%{$fg[white]%}in \
+%{$fg[black]%}in \
 %{$terminfo[bold]$fg[black]%}${current_dir}%{$reset_color%}\
 ${hg_info}\
 ${git_info} \
-%{$fg[white]%}[%*]
+%{$fg[black]%}[%*]
 %{$terminfo[bold]$fg[black]%}$ %{$reset_color%}"
 
 if [[ "$USER" == "root" ]]; then
 PROMPT="
 %{$terminfo[bold]$fg[blue]%}#%{$reset_color%} \
 %{$bg[black]%}%{$fg[cyan]%}%n%{$reset_color%} \
-%{$fg[white]%}at \
+%{$fg[black]%}at \
 %{$fg[green]%}$(box_name) \
-%{$fg[white]%}in \
+%{$fg[black]%}in \
 %{$terminfo[bold]$fg[black]%}${current_dir}%{$reset_color%}\
 ${hg_info}\
 ${git_info} \
-%{$fg[white]%}[%*]
+%{$fg[black]%}[%*]
 %{$terminfo[bold]$fg[black]%}$ %{$reset_color%}"
 fi
