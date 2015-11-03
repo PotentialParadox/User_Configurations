@@ -1,7 +1,7 @@
 # Clean, simple, compatible and meaningful.
 # Tested on Linux, Unix and Windows under ANSI colors.
 # It is recommended to use with a dark background and the font Inconsolata.
-# Colors: black, red, green, black, *blue, magenta, cyan, and white.
+# Colors: black, red, black, black, *blue, magenta, cyan, and white.
 # 
 # http://ysmood.org/wp/2013/03/my-ys-terminal-theme/
 # Mar 2013 ys
@@ -19,7 +19,7 @@ YS_VCS_PROMPT_PREFIX1=" %{$fg[white]%}on%{$reset_color%} "
 YS_VCS_PROMPT_PREFIX2=":%{$fg[cyan]%}"
 YS_VCS_PROMPT_SUFFIX="%{$reset_color%}"
 YS_VCS_PROMPT_DIRTY=" %{$fg[red]%}x"
-YS_VCS_PROMPT_CLEAN=" %{$fg[green]%}o"
+YS_VCS_PROMPT_CLEAN=" %{$fg[black]%}o"
 
 # Git info.
 local git_info='$(git_prompt_info)'
@@ -49,7 +49,7 @@ ys_hg_prompt_info() {
 # %{$fg[cyan]%}%n \
 # %{$fg[white]%}at \
 PROMPT="
-%{$fg[green]%}$(box_name) \
+%{$fg[black]%}$(box_name) \
 %{$fg[white]%}in \
 %{$terminfo[bold]$fg[black]%}${current_dir}%{$reset_color%}\
 ${hg_info}\
@@ -62,7 +62,7 @@ PROMPT="
 %{$terminfo[bold]$fg[blue]%}#%{$reset_color%} \
 %{$bg[black]%}%{$fg[cyan]%}%n%{$reset_color%} \
 %{$fg[white]%}at \
-%{$fg[green]%}$(box_name) \
+%{$fg[black]%}$(box_name) \
 %{$fg[white]%}in \
 %{$terminfo[bold]$fg[black]%}${current_dir}%{$reset_color%}\
 ${hg_info}\
