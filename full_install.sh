@@ -29,7 +29,6 @@ dist=`grep DISTRIB_ID /etc/*-release | awk -F '=' '{print $2}'`
 
 if [ "$dist" == "Ubuntu" ]; then
   sudo apt-get update -y
-  sudo apt-get upgrade -y
   sudo apt-get install -y vim tmux curl zsh
   if [ ! $SHELL = /usr/bin/zsh ]; then
     echo "zsh installed"
