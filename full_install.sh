@@ -36,8 +36,11 @@ if [ "$dist" == "Ubuntu" ]; then
     sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
     sudo chsh -s $(which zsh) $(whoami)
   fi
+  cp ~/User_Configurations/dustin.zsh-theme ~/.oh-my-zsh/themes
   vim -c "PlugInstall"
 fi
+
+python zsh_config.py
 
 
 if [ ! -f ~/.vim/autoload/plug.vim ]; then
