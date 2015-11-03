@@ -14,6 +14,7 @@ Plug 'terryma/vim-multiple-cursors'
 Plug 'klen/python-mode'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
+Plug 'benmills/vimux'
 call plug#end()
 
 set background=light
@@ -44,6 +45,10 @@ map <F8> :%!astyle<CR>
 nnoremap <leader>s :w!<CR>
 nnoremap <leader>q :wq!<CR>
 nnoremap <leader>f :set spell!<CR>
+
+"Vimux
+nnoremap <leader>t :VimuxRunCommand<CR>
+nnoremap <leader>r :VimuxRunLastCommand<CR>
 
 "Close annoying buffer window
 autocmd CursorMovedI * if pumvisible() == 0|pclose|endif
