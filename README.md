@@ -2,7 +2,8 @@
 This repository contains my personal user configurations for a variety of different applications. 
 For those who haven't used any of the following, I believe that these are very good starting points. 
 Note that I personally did not make any of the following plugins and take no credit for them. 
-I've created hyperlinks to the creators github accounts, for more information, please follow thoses.
+I've created hyperlinks to the creators github accounts. 
+For more information, please follow thoses.
 
 # Install
 These configuration require the installation of vim and tmux. 
@@ -11,7 +12,7 @@ Note that most servers have these already available.
 ## One step (installs zsh)
 For mac and ubuntu copy and paste this into your terminal
 ```
-git clone https://github.com/PotentialParadox/User\_Configurations && ~/User\_Configurations/install.sh
+git clone https://github.com/PotentialParadox/User\_Configurations && ~/User\_Configurations/full_install.sh
 ```
 
 ## Two step (does not install zsh)
