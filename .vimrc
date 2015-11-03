@@ -83,3 +83,6 @@ set nospell spelllang=en_us
 
 "Enable '.' in visual mode
 vnoremap . :norm.<CR>
+
+"Set backspace to normal use
+set backspace=2
