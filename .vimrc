@@ -86,3 +86,6 @@ vnoremap . :norm.<CR>
 
 "Set backspace to normal use
 set backspace=2
+
+"Set nowrap
+set nowrap
