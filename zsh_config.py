@@ -15,5 +15,10 @@ new_file_string = re.sub(p_theme, 'ZSH_THEME="dustin"', file_string)
 
 fout = open(home + '/.zshrc', 'w')
 fout.write(new_file_string)
+fout.write(
+           'bindkey -v \n'
+           'export KEYTIMEOUT=1 \n'
+           'zle-line-init \n'
+           )
 fout.close()
 
