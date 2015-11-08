@@ -48,14 +48,15 @@ ys_hg_prompt_info() {
 ## %{$terminfo[bold]$fg[blue]%}#%{$reset_color%} \
 # %{$fg[cyan]%}%n \
 # %{$fg[black]%}at \
+# %{$fg[black]%}[%*]
 PROMPT="
 %{$fg[green]%}$(box_name) \
-%{$fg[black]%}in \
-%{$terminfo[bold]$fg[black]%}${current_dir}%{$reset_color%}\
+%{$fg[green]%}in \
+%{$terminfo[bold]$fg[green]%}${current_dir}%{$reset_color%}\
 ${hg_info}\
 ${git_info} \
-%{$fg[black]%}[%*]
-%{$terminfo[bold]$fg[black]%}$ %{$reset_color%}"
+%{$fg[white]%}[%*]
+%{$terminfo[bold]$fg[cyan]%}$ %{$reset_color%}"
 
 if [[ "$USER" == "root" ]]; then
 PROMPT="
@@ -63,8 +64,8 @@ PROMPT="
 %{$bg[black]%}%{$fg[cyan]%}%n%{$reset_color%} \
 %{$fg[black]%}at \
 %{$fg[green]%}$(box_name) \
-%{$fg[black]%}in \
-%{$terminfo[bold]$fg[black]%}${current_dir}%{$reset_color%}\
+%{$fg[green]%}in \
+%{$terminfo[bold]$fg[green]%}${current_dir}%{$reset_color%}\
 ${hg_info}\
 ${git_info} \
 %{$fg[black]%}[%*]
