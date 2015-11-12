@@ -45,6 +45,7 @@ map <F8> :%!astyle<CR>
 nnoremap <leader>s :w!<CR>
 nnoremap <leader>q :wq!<CR>
 nnoremap <leader>f :set spell!<CR>
+set pastetoggle=<leader>p
 
 "Vimux
 nnoremap <leader>t :VimuxPromptCommand<CR>
