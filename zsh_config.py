@@ -17,3 +17,14 @@ new_file_string1 = re.sub(p_vi, 'plugins=(git vi-mode)', new_file_string)
 
 fout = open(home + '/.zshrc', 'w')
 fout.write(new_file_string1)
+s_upgrade = (
+    'alias upgrade="sudo apt-get update -y && sudo apt-get upgrade -y"\n')
+s_history = (
+    'bindkey \'^r\' history-incremental-search-backward')
+p_upgrade = re.compile(s_upgrade)
+p_history = re.compile(s_history)
+if not re.search(s_upgrade, new_file_string1):
+    fout.write(s_upgrade)
+if not re.search(s_history, new_file_string1):
+    fout.write(s_history)
+fout.close()
