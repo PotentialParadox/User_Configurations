@@ -22,9 +22,9 @@ s_upgrade = (
 s_history = (
     'bindkey \'^r\' history-incremental-search-backward')
 p_upgrade = re.compile(s_upgrade)
-p_history = re.compile(s_history)
-if not re.search(s_upgrade, new_file_string1):
+p_history = re.compile('history-incremental-search-backward')
+if not re.search(p_upgrade, new_file_string1):
     fout.write(s_upgrade)
-if not re.search(s_history, new_file_string1):
+if not re.search(p_history, new_file_string1):
     fout.write(s_history)
 fout.close()
