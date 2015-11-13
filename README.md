@@ -120,14 +120,15 @@ Vimux - open terminal           | leader-t
 Vimux - run last command        | leader-r
 
 ## User Defined Vim Shortcuts
-Function         | Key 
----------------- | -------
-Vertical Split   | leader-v
-Horizontal Split | leader-h
-Quick Save       | leader-s
-Quick Save-Close | leader-q
-SpellCheck Toggle| leader-f
-Toggle Paste     | leader-p
+Function             | Key 
+-------------------- | -------
+Vertical Split       | leader-v
+Horizontal Split     | leader-h
+Quick Save           | leader-s
+Quick Save-Close     | leader-q
+SpellCheck Toggle    | leader-f
+Paste from clipboard | leader-p
+Copy to clipboad     | leader-y
 
 # TMUX
 Tmux is very similar to the now sort of depricated gnu-screen. 
