@@ -92,3 +92,6 @@ set backspace=2
 
 "Set nowrap
 set nowrap
+
+"Autload changes
+set autoread
