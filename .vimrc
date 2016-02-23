@@ -1,3 +1,6 @@
+" Use 256 colors
+set t_Co=256
+
 " Initializing plugins
 
 call plug#begin()
@@ -15,9 +18,12 @@ Plug 'klen/python-mode'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'benmills/vimux'
+Plug 'flazz/vim-colorschemes'
 call plug#end()
 
+" Sets the colorscheme to solarized
 set background=light
+colorscheme solarized
 
 " Plugin Settings
 
