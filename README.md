@@ -44,9 +44,16 @@ YouCompleteMe needs to be compliled before it can work.
 cd ~/.vimr/plugged/YouCompleteMe
 ./install.py
 ```
-Finally, you need to move the .ycm_extra_conf.py file to your working directory.
+You complete me uses a configuration file called .ycm_extra_conf.py.
+It will search for this whenever you open a c/c++ coding project.
+Its recommended that you place it in your working directory.
+However, a lazy work around is to use one primary one for all.
+This can be done by placing the file in a very high directory.
+```
+cp ~/User\_Configurations/.ycm_extra_conf.py ~/
+```
 I've added some very common include directories.
-If its not working the readme for it is very good.
+If its not working the readme, it is very good.
 
 ## One step (very very beta, use at your own risk)
 For mac and ubuntu copy and paste this into your terminal
@@ -90,12 +97,8 @@ An very good syntax checker.
 However, it will only check after a save. 
 Note that if you don't want to install clang, you'd need to comment out Clang_Complete and Syntastic along with their corresponding options.
 
-<a href="https://github.com/Shougo/neocomplete.vim">NeoComplete</a> - 
+<a href="https://github.com/valloric/youcompleteme">YouCompleteMe</a> - 
 Keyword completion
-
-<a href="https://github.com/Rip-Rip/clang_complete">ClangComplete</a> 
-Keyword completion using clang for c and c++. 
-Note that if you don't want to install clang, you'd need to comment out lines 25-32.
 
 <a href="https://github.com/christoomey/vim-tmux-navigator">VimTmuxNavigator</a> 
 Allows for the seemless integration of vim and tmux.
