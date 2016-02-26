@@ -18,30 +18,20 @@ if [ "$(uname)" == "Darwin" ]; then
     sudo chown -R $(whoami) /usr/local
     brew install tmux
   fi
-  if [ ! -d /usr/local/Cellar/zsh ]; then
-    brew install zsh
-    sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-    sudo chsh -s $(which zsh) $(whoami)
+  if [ ! -d /usr/local/Cellar/cmake ]; then
+    brew install cmake
   fi
+  vim -c "PlugInstall"
 fi
 
 dist=`grep DISTRIB_ID /etc/*-release | awk -F '=' '{print $2}'`
 
 if [ "$dist" == "Ubuntu" ]; then
   sudo apt-get update -y
-  sudo apt-get install -y vim tmux curl zsh
-  if [ ! $SHELL = /usr/bin/zsh ]; then
-    echo "zsh installed"
-    sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-    sudo chsh -s $(which zsh) $(whoami)
-  fi
+  sudo apt-get install -y vim tmux curl zsh cmake
   vim -c "PlugInstall"
 fi
 
-cp ~/User_Configurations/dustin.zsh-theme ~/.oh-my-zsh/themes/
-python zsh_config.py
 cp -R ~/.vim/plugged/vim-colorschemes/colors ~/.vim
-if [ ! -f ~/.vim/autoload/plug.vim ]; then
-  curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
-      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-fi
+cd ~/.vim/plugged/youcompleteme
+./youcompleteme

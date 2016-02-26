@@ -55,11 +55,11 @@ cp ~/User\_Configurations/.ycm_extra_conf.py ~/
 I've added some very common include directories.
 If its not working the readme, it is very good.
 
-## One step (very very beta, use at your own risk)
-For mac and ubuntu copy and paste this into your terminal
-```
-git clone https://github.com/PotentialParadox/User\_Configurations && ~/User\_Configurations/full_install.sh
-```
+<!--## One step (very very beta, use at your own risk)-->
+<!--For mac and ubuntu copy and paste this into your terminal-->
+<!--```-->
+<!--git clone https://github.com/PotentialParadox/User\_Configurations && ~/User\_Configurations/full_install.sh-->
+<!--`-->``
 
 
 # VIM
