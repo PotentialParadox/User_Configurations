@@ -9,22 +9,17 @@ For more information, please follow thoses.
 These configuration require the installation of vim and tmux. 
 Note that most servers have these already available.
 
-## One step (installs zsh)
-For mac and ubuntu copy and paste this into your terminal
-```
-git clone https://github.com/PotentialParadox/User\_Configurations && ~/User\_Configurations/full_install.sh
-```
-
-## Two step (does not install zsh)
+## Three step (does not install zsh)
 ### Dependencies
 For ubuntu, you only need to copy and paste this into your terminal
 ```
-sudo apt-get install vim tmux curl
+sudo apt-get install vim tmux curl clang cmake
 ```
 For mac, <a href="brew.sh">Homebrew</a> will be used. 
 In the following replace username with your username.
 ```
 brew install vim
+brew install cmake
 brew uninstall libevent
 sudo chown -R username /usr/local
 brew install tmux
@@ -38,7 +33,27 @@ Open vim, (ignore any initial errors for now) and type in the command
 ```
 PlugInstall
 ```
-You're done.
+## Get the solarized theme working
+You now need to move the color theme folder over, this can be done with the command
+```
+cp -R ~/.vim/plugged/vim-colorschemes/colors ~/.vim/
+```
+## Get YouCompleteMe working
+YouCompleteMe needs to be compliled before it can work.
+```
+cd ~/.vimr/plugged/YouCompleteMe
+./install.py
+```
+Finally, you need to move the .ycm_extra_conf.py file to your working directory.
+I've added some very common include directories.
+If its not working the readme for it is very good.
+
+## One step (very very beta, use at your own risk)
+For mac and ubuntu copy and paste this into your terminal
+```
+git clone https://github.com/PotentialParadox/User\_Configurations && ~/User\_Configurations/full_install.sh
+```
+
 
 # VIM
 Vim is the successor to vi, a very keyboard shortcut optimized editor. 

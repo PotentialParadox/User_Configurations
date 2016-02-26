@@ -40,7 +40,7 @@ fi
 
 cp ~/User_Configurations/dustin.zsh-theme ~/.oh-my-zsh/themes/
 python zsh_config.py
-
+cp -R ~/.vim/plugged/vim-colorschemes/colors ~/.vim
 if [ ! -f ~/.vim/autoload/plug.vim ]; then
   curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
