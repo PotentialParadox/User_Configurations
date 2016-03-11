@@ -11,7 +11,6 @@ Plug 'bling/vim-airline'
 Plug 'scrooloose/nerdcommenter'
 Plug 'scrooloose/syntastic'
 Plug 'Valloric/YouCompleteMe'
-Plug 'Rip-Rip/clang_complete'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'klen/python-mode'
@@ -27,10 +26,8 @@ colorscheme solarized
 
 " Plugin Settings
 
-" Clang Complete
-let g:clang_library_path="/usr/lib/llvm-3.4/lib"
-let g:clang_complet_auto=1
-let g:clang_user_options="-std=c++11"
+" YouCompleteMe
+let g:ycm_confirm_extra_conf = 0
 
 " Syntastic
 let g:syntastic_cpp_compiler="clang++"
