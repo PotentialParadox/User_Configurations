@@ -42,7 +42,11 @@ cp -R ~/.vim/plugged/vim-colorschemes/colors ~/.vim/
 YouCompleteMe needs to be compliled before it can work.
 ```
 cd ~/.vimr/plugged/YouCompleteMe
-./install.py
+./install.py --clang-completer --system-libclang
+```
+If you are using mac, you may need to export this first
+```
+EXTRA_CMAKE_ARGS="-DEXTERNAL_LIBCLANG_PATH=/Library/Developer/CommandLineTools/usr/lib/libclang.dylib"
 ```
 You complete me uses a configuration file called .ycm_extra_conf.py.
 It will search for this whenever you open a c/c++ coding project.
