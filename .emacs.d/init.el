@@ -53,6 +53,7 @@
 (require `evil-leader)
 (global-evil-leader-mode)
 (evil-leader/set-key
+  "q" `delete-window
   "f" `find-file 
   "r" `shell-command
   "b" `helm-buffers-list
@@ -73,6 +74,11 @@
 
 (require `evil-mc)
 (global-evil-mc-mode 1)
+
+(global-set-key (kbd "C-c h")  'windmove-left)
+(global-set-key (kbd "C-c l") 'windmove-right)
+(global-set-key (kbd "C-c k")    'windmove-up)
+(global-set-key (kbd "C-c j")  'windmove-down)
 
 ;; (eval-after-load 'flycheck
 ;;   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
@@ -141,5 +147,14 @@
                                    "eshell-mode" "dired-mode"))
 
 (golden-ratio-mode)
+
+;; === Bash Completion ===
+(require 'bash-completion)
+(bash-completion-setup)
+(add-hook 'term-mode-hook 'evil-emacs-state)
+(setq explicit-shell-file-name "/bin/bash")
+
+;; === Save Window Configuration ===
+(desktop-save-mode 1)
 
 ;;
