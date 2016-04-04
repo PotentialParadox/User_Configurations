@@ -41,7 +41,7 @@ cp -R ~/.vim/plugged/vim-colorschemes/colors ~/.vim/
 ## Get YouCompleteMe working
 YouCompleteMe needs to be compliled before it can work.
 ```
-cd ~/.vimr/plugged/YouCompleteMe
+cd ~/.vim/plugged/YouCompleteMe
 ./install.py --clang-completer --system-libclang
 ```
 If you are using mac, you may need to export this first
