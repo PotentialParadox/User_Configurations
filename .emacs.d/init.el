@@ -1,5 +1,4 @@
-;;; package --- summary
-;;; Commentary: 
+;;; === Begin Package Management ===
 (require 'package)
 ;;; Code:
 (setq package-enable-at-startup nil)
@@ -8,53 +7,39 @@
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (package-initialize)
 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+;;; === End Package Management ===
 
-(eval-when-compile
-  (require 'use-package))
-(require 'diminish)
-(require 'bind-key)
+;;; === Begin Path Management ===
+(require 'exec-path-from-shell)
+(when (memq window-system '(mac ns))
+  (exec-path-from-shell-initialize))
+;;; === End Path Management ===
 
-;; == irony-mode ==
-(require 'irony)
+;;; === Begin Bash Completion ===
+(require 'bash-completion)
+(bash-completion-setup)
+(add-hook 'term-mode-hook 'evil-emacs-state)
+(setq explicit-shell-file-name "/bin/bash")
+;;; === End Bash Completion ===
 
-;; == set company backend to jedi ==
-;; == company ==
-;; == Clang must be installed and simlinked to /usr/bin/clang ==
-(require 'company)
-(require 'company-irony)
-(require 'company-jedi)
-(setq company-backends (delete 'company-semantic company-backends))
-(add-hook 'after-init-hook 'global-company-mode)
-(defun my-c++-mode-hook ()
-  (irony-mode 1)
-  (add-to-list 'company-backends 'company-irony))
-(add-hook 'c++-mode-hook 'my-c++-mode-hook ())
+;;; === Begin Custom Keys ===
+(global-set-key (kbd "C-c h")  'windmove-left)
+(global-set-key (kbd "C-c l") 'windmove-right)
+(global-set-key (kbd "C-c k")    'windmove-up)
+(global-set-key (kbd "C-c j")  'windmove-down)
+;;; === End Custom Keys ===
 
-(require 'cmake-project)
-(defun maybe-cmake-project-hook ()
-  (if (file-exists-p "CMakeLists.txt") (cmake-project-mode)))
-(add-hook 'c-mode-hook 'maybe-cmake-project-hook)
-(add-hook 'c++-mode-hook 'maybe-cmake-project-hook)
-
-;; Comment: You most likely will need to change this directory
-;; Before you do though "pip install -U Path/to/jedi-core.../"
-(setq jedi:server-command '("~/.emacs.d/elpa/jedi-core-20151214.705/jediepcserver.py"))
-(defun my-python-mode-hook ()
-  (add-to-list 'company-backends 'company-jedi))
-(add-hook 'python-mode-hook 'my-python-mode-hook)
-
-(require `helm)
-(require `helm-config)
-(global-set-key (kbd "M-x") `helm-M-x)
-
-(require `evil-leader)
+;;; === Begin Evil Configurations ===
+(require 'evil)
+(require 'evil-leader)
+(require 'evil-nerd-commenter)
+(require 'evil-mc)
+(evil-mode 1)
+(global-evil-mc-mode 1)
 (global-evil-leader-mode)
 (evil-leader/set-key
   "q" `delete-window
-  "f" `find-file 
+  "f" `helm-find-files
   "r" `shell-command
   "b" `helm-buffers-list
   "v" `split-window-right
@@ -68,54 +53,101 @@
   "cp" `evilnc-comment-or-uncomment-paragraphs
   "cr" `comment-or-uncomment-region
   "cv" `evilnc-toggle-invert-comment-line-by-line)
+;;; === End Evil Configurations ===
 
-(require `evil)
-(evil-mode 1)
+;;; === Begin Company Initalization ===
+(require 'company)
+;;; === End Company Initalization ===
 
-(require `evil-mc)
-(global-evil-mc-mode 1)
+;;; === Begin Flycheck Initialization ===
+(require 'flycheck)
+;;; === End Flycheck Initialization ===
 
-(global-set-key (kbd "C-c h")  'windmove-left)
-(global-set-key (kbd "C-c l") 'windmove-right)
-(global-set-key (kbd "C-c k")    'windmove-up)
-(global-set-key (kbd "C-c j")  'windmove-down)
+;;; === Begin Helm Configuration ===
+(require 'helm)
+(require 'helm-config)
+(global-set-key (kbd "M-x") `helm-M-x)
+;;; === End Helm Configuration ===
 
-;; (eval-after-load 'flycheck
-;;   '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
-;; (global-flycheck-mode)
-;; (add-hook 'c++-mode-hook (lambda () (setq flycheck-clang-language-standard "c++11")))
+;;; !!!!!!! Begin C++ Configuration !!!!!!!!
 
-;; == ede ==
-;; Project Management
-;; (global-ede-mode t)
+;;; === Begin Rtags Configuration ===
+;; First install rtags following the guide here
+;; https://github.com/Andersbakken/rtags#tldr-quickstart
+(require 'rtags)
+(require 'company-rtags)
+(setq rtags-completions-enabled t)
+(eval-after-load 'company
+  '(add-to-list
+    'company-backends 'company-rtags))
+(setq rtags-autostart-diagnostics t)
+(rtags-enable-standard-keybindings)
+;;; === End Rtags Configuration ===
 
+;;; === Begin Irony Configuration ===
+(require 'irony)
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'objc-mode-hook 'irony-mode)
 
-;; Allow code folding
-(add-hook 'c-mode-common-hook 'hs-minor-mode)
+(defun my-irony-mode-hook ()
+  (define-key irony-mode-map [remap completion-at-point]
+    'irony-completion-at-point-async)
+  (define-key irony-mode-map [remap complete-symbol]
+    'irony-completion-at-point-async))
 
-(load-theme 'solarized t)
+(add-hook 'irony-mode-hook 'my-irony-mode-hook)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 
-;; Avoid annoying backups
-(setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
-  backup-by-copying t    ; Don't delink hardlinks
-  version-control t      ; Use version numbers on backups
-  delete-old-versions t  ; Automatically delete excess backups
-  kept-new-versions 20   ; how many of the newest versions to keep
-  kept-old-versions 5    ; and how many of the old
-  )
+;; Company auto completion
+(add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
+(setq company-backends (delete 'company-semantic company-backends))
+(setq company-idle-delay 0)
+(define-key c-mode-map [(tab)] 'company-complete)
+(define-key c++-mode-map [(tab)] 'company-complete)
+(add-hook 'after-init-hook 'global-company-mode)
+
+(require 'company-irony-c-headers)
+(eval-after-load 'company
+  '(add-to-list
+    'company-backends '(company-irony-c-headers company-irony)))
+;;; === End Irony Configuration ===
+
+;;; === Begin C++ Flycheck Configuration ===
+(add-hook 'c++-mode-hook 'flycheck-mode)
+(add-hook 'c-mode-hook 'flycheck-mode)
+
+(require 'flycheck-rtags)
+(defun my-flycheck-rtags-setup ()
+  (flycheck-select-checker 'rtags)
+  (setq-local flycheck-highlighting-mode nil) ;; RTags creates more accurate overlays.
+  (setq-local flycheck-check-syntax-automatically nil))
+(add-hook 'c-mode-common-hook 'my-flycheck-rtags-setup)
+
+(require 'flycheck-irony)
+(eval-after-load 'flycheck
+  '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+;;; === End C++ Flycheck Configuration ===
+
+;;; === Begin cmake-ide Configuration ===
+
+(require 'cmake-ide)
+;; Add this line to a .dir-locals.el
+;; ((nil . ((cmake-ide-build-dir "<PATH_TO_PROJECT_BUILD_DIRECTORY>"))))
+
+;;; === End cmake-ide Configuration ===
+
+;;; !!!!!!! End C++ Configuration !!!!!!!!
+
+;;; === Begin Theme ===
+
+;; Remove the damn bells
+(setq ring-bell-function 'ignore)
 
 ;; Numbers
 (global-linum-mode 1)
-(setq linum-format "%4d \u2502 ")
 
-;; Scrolling
-(setq scroll-conservatively most-positive-fixnum)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; PACKAGE: golden-ratio                         ;;
-;;                                               ;;
-;; GROUP: Environment -> Windows -> Golden Ratio ;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Adjust the windows dynamically
 (require 'golden-ratio)
 
 (add-to-list 'golden-ratio-exclude-modes "ediff-mode")
@@ -148,13 +180,24 @@
 
 (golden-ratio-mode)
 
-;; === Bash Completion ===
-(require 'bash-completion)
-(bash-completion-setup)
-(add-hook 'term-mode-hook 'evil-emacs-state)
-(setq explicit-shell-file-name "/bin/bash")
+(load-theme 'solarized-light)
 
-;; === Save Window Configuration ===
-(desktop-save-mode 1)
+;; Remove tool-bar
+(tool-bar-mode -1)
 
-;;
+;;; === End Theme ===
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" default))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
