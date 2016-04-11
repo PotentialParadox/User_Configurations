@@ -6,7 +6,6 @@
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (package-initialize)
-
 ;;; === End Package Management ===
 
 ;;; === Begin Path Management ===
@@ -55,6 +54,10 @@
   "cv" `evilnc-toggle-invert-comment-line-by-line)
 ;;; === End Evil Configurations ===
 
+;;; === Begin Magit Configurations ===
+(require 'magit)
+;;; === End Magit Configurations ===
+
 ;;; === Begin Company Initalization ===
 (require 'company)
 ;;; === End Company Initalization ===
@@ -69,7 +72,17 @@
 (global-set-key (kbd "M-x") `helm-M-x)
 ;;; === End Helm Configuration ===
 
+;;; === Begin Projectile Configuration ===
+(projectile-global-mode)
+(setq projectile-completion-system 'helm)
+(helm-projectile-on)
+;;; === End Projectile Configuration ===
+
 ;;; !!!!!!! Begin C++ Configuration !!!!!!!!
+
+;; === Begin CMake Initialization ===
+(require 'cmake-mode)
+;; === End CMake Initialization ===
 
 ;;; === Begin Rtags Configuration ===
 ;; First install rtags following the guide here
@@ -180,10 +193,8 @@
 
 (golden-ratio-mode)
 
-(load-theme 'solarized-light t)
-
 ;; Remove tool-bar
 (tool-bar-mode -1)
 
+(load-theme 'monokai t) 
 ;;; === End Theme ===
-
