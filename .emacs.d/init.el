@@ -33,10 +33,12 @@
 (require 'evil-leader)
 (require 'evil-nerd-commenter)
 (require 'evil-mc)
+(require 'origami)
 (evil-mode 1)
 (global-evil-mc-mode 1)
 (global-evil-leader-mode)
 (evil-leader/set-key
+  "z" `origami-toggle-node
   "q" `delete-window
   "f" `helm-find-files
   "r" `shell-command
