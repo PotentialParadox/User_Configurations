@@ -7,6 +7,11 @@
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (package-initialize)
+
+;; Bootstrap `use-package'
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 ;;; === End Package Management ===
 
 ;;; === Begin Basics ===
@@ -17,13 +22,15 @@
 (setq auto-window-vscroll nil)
 
 ;;; === Begin Path Management ===
-(require 'exec-path-from-shell)
+(use-package exec-path-from-shell
+  :ensure t)
 (when (memq window-system '(mac ns))
   (exec-path-from-shell-initialize))
 ;;; === End Path Management ===
 
 ;;; === Begin Bash Completion ===
-(require 'bash-completion)
+(use-package bash-completion
+  :ensure t)
 (bash-completion-setup)
 (add-hook 'term-mode-hook 'evil-emacs-state)
 (setq explicit-shell-file-name "/bin/bash")
@@ -37,10 +44,14 @@
 ;;; === End Custom Keys ===
 
 ;;; === Begin Evil Configurations ===
-(require 'evil)
-(require 'evil-leader)
-(require 'evil-nerd-commenter)
-(require 'evil-mc)
+(use-package evil
+  :ensure t)
+(use-package evil-leader
+  :ensure t)
+(use-package evil-nerd-commenter
+  :ensure t)
+(use-package evil-mc
+  :ensure t)
 (evil-mode 1)
 (global-evil-mc-mode 1)
 (global-evil-leader-mode)
@@ -63,24 +74,30 @@
 ;;; === End Evil Configurations ===
 
 ;;; === Begin Magit Configurations ===
-(require 'magit)
+(use-package magit
+  :ensure t)
 ;;; === End Magit Configurations ===
 
 ;;; === Begin Company Initalization ===
-(require 'company)
+(use-package company
+  :ensure t)
 ;;; === End Company Initalization ===
 
 ;;; === Begin Flycheck Initialization ===
-(require 'flycheck)
+(use-package flycheck
+  :ensure t)
 ;;; === End Flycheck Initialization ===
 
 ;;; === Begin Helm Configuration ===
-(require 'helm)
+(use-package helm
+  :ensure t)
 (require 'helm-config)
 (global-set-key (kbd "M-x") `helm-M-x)
 ;;; === End Helm Configuration ===
 
 ;;; === Begin Projectile Configuration ===
+(use-package projectile
+  :ensure t)
 (projectile-global-mode)
 (setq projectile-completion-system 'helm)
 (helm-projectile-on)
@@ -88,7 +105,8 @@
 
 
 ;;; === Begin YaSnippet ===
-(require 'yasnippet)
+(use-package yasnippet
+  :ensure t)
 ;; Allow for nested snippets
 (setq yas/triggers-in-field t)
 ;; Removes annoying newline
@@ -103,14 +121,17 @@
 (add-hook 'c-mode-common-hook   'hs-minor-mode)
 
 ;; === Begin CMake Initialization ===
-(require 'cmake-mode)
+(use-package cmake-mode
+  :ensure t)
 ;; === End CMake Initialization ===
 
 ;;; === Begin Rtags Configuration ===
 ;; First install rtags following the guide here
 ;; https://github.com/Andersbakken/rtags#tldr-quickstart
-(require 'rtags)
+(use-package rtags
+  :ensure t)
 (require 'company-rtags)
+
 (setq rtags-completions-enabled t)
 (eval-after-load 'company
   '(add-to-list
@@ -120,7 +141,8 @@
 ;;; === End Rtags Configuration ===
 
 ;;; === Begin Irony Configuration ===
-(require 'irony)
+(use-package irony
+  :ensure t)
 (add-hook 'c++-mode-hook 'irony-mode)
 (add-hook 'c-mode-hook 'irony-mode)
 (add-hook 'objc-mode-hook 'irony-mode)
@@ -142,7 +164,8 @@
 (define-key c++-mode-map [(tab)] 'company-complete)
 (add-hook 'after-init-hook 'global-company-mode)
 
-(require 'company-irony-c-headers)
+(use-package company-irony-c-headers
+  :ensure t)
 (eval-after-load 'company
   '(add-to-list
     'company-backends '(company-irony-c-headers company-irony)))
@@ -159,14 +182,16 @@
   (setq-local flycheck-check-syntax-automatically nil))
 (add-hook 'c-mode-common-hook 'my-flycheck-rtags-setup)
 
-(require 'flycheck-irony)
+(use-package flycheck-irony
+  :ensure t)
 (eval-after-load 'flycheck
-  '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+  '(add-hook 'flycheck-mode-hook 'flycheck-irony-setup))
 ;;; === End C++ Flycheck Configuration ===
 
 ;;; === Begin cmake-ide Configuration ===
 
-(require 'cmake-ide)
+(use-package cmake-ide
+  :ensure t)
 ;; Add this line to a .dir-locals.el
 ;; ((nil . ((cmake-ide-build-dir "<PATH_TO_PROJECT_BUILD_DIRECTORY>"))))
 
@@ -175,9 +200,12 @@
 ;;; !!!!!!! End C++ Configuration !!!!!!!!
 
 ;;; !!!!!!! Begin Latex Configuration !!!!!!
+(use-package company-auctex
+  :ensure t)
 (setq TeX-auto-save t)
 (setq TeX-parse-self t)
 (global-font-lock-mode 1)
+(add-hook 'latex-mode 'company-auctex-init)
 
 ;;; === Begin Theme ===
 
@@ -188,7 +216,8 @@
 (global-linum-mode 1)
 
 ;; Adjust the windows dynamically
-(require 'golden-ratio)
+(use-package golden-ratio
+  :ensure t)
 
 (add-to-list 'golden-ratio-exclude-modes "ediff-mode")
 (add-to-list 'golden-ratio-exclude-modes "helm-mode")
@@ -223,10 +252,20 @@
 ;; Remove tool-bar
 (tool-bar-mode -1)
 
+(use-package monokai-theme
+  :ensure t)
 (load-theme 'monokai t) 
 
 
 ;;; === End Theme ===
+
+
+;;; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+;;;
+;;;                   END of Config
+;;;
+;;; !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
