@@ -80,6 +80,9 @@
 
 ;;; !!!!!!! Begin C++ Configuration !!!!!!!!
 
+;; Folding
+(add-hook 'c-mode-common-hook   'hs-minor-mode)
+
 ;; === Begin CMake Initialization ===
 (require 'cmake-mode)
 ;; === End CMake Initialization ===
@@ -139,7 +142,7 @@
 
 (require 'flycheck-irony)
 (eval-after-load 'flycheck
-  '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+  '(add-hook 'flycheck-mode-hook 'flycheck-irony-setup))
 ;;; === End C++ Flycheck Configuration ===
 
 ;;; === Begin cmake-ide Configuration ===
