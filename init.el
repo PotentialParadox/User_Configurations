@@ -159,6 +159,9 @@
 ;; Company auto completion
 (add-hook 'irony-mode-hook 'company-irony-setup-begin-commands)
 (setq company-backends (delete 'company-semantic company-backends))
+(eval-after-load 'company
+  '(add-to-list
+    'company-backends 'company-irony))
 (setq company-idle-delay 0)
 (define-key c-mode-map [(tab)] 'company-complete)
 (define-key c++-mode-map [(tab)] 'company-complete)
