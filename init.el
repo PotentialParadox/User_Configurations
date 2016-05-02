@@ -91,6 +91,8 @@
 ;;; === Begin Helm Configuration ===
 (use-package helm
   :ensure t)
+(use-package helm-projectile
+  :ensure t)
 (require 'helm-config)
 (global-set-key (kbd "M-x") `helm-M-x)
 ;;; === End Helm Configuration ===
