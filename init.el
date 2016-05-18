@@ -260,6 +260,7 @@
 (use-package monokai-theme
   :ensure t)
 (load-theme 'monokai t) 
+(menu-bar-mode -1)
 
 
 ;;; === End Theme ===
