@@ -119,6 +119,9 @@
 
 ;;; !!!!!!! Begin C++ Configuration !!!!!!!!
 
+;; Make .h files default to c++
+(add-to-list 'auto-mode-alist '("\\.h\\'" . c++-mode))
+
 ;; Folding
 (add-hook 'c-mode-common-hook   'hs-minor-mode)
 
