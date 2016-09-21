@@ -1,5 +1,7 @@
 " Use 256 colors
-set t_Co=256
+" set t_Co=256
+set termguicolors
+set t_ut=
 
 " Initializing plugins
 
@@ -9,7 +11,8 @@ Plug 'kien/ctrlp.vim'
 Plug 'tpope/vim-fugitive'
 Plug 'bling/vim-airline'
 Plug 'scrooloose/nerdcommenter'
-Plug 'scrooloose/syntastic'
+"Plug 'scrooloose/syntastic'
+Plug 'easymotion/vim-easymotion'
 Plug 'Valloric/YouCompleteMe'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'terryma/vim-multiple-cursors'
@@ -21,31 +24,28 @@ Plug 'flazz/vim-colorschemes'
 call plug#end()
 
 " Sets the colorscheme to solarized
-set background=light
-colorscheme solarized
+syntax on
+set background=dark
+colorscheme atom
 
 " Plugin Settings
 
 " YouCompleteMe
-let g:ycm_confirm_extra_conf = 0
-
-" Syntastic
-let g:syntastic_cpp_compiler="clang++"
-let g:syntastic_cpp_compiler_options="-std=c++11"
+"let g:ycm_confirm_extra_conf = 0
 
 " Nerdtree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-
-" Begin Mapping
-
-" Nerdtree
 map <C-c> :NERDTreeToggle<CR>
+
+" NerdCommenter
+nmap <C-_> <leader>c<Space>
+vmap <C-_> <leader>c<Space>
 
 " Basic key mapping
 nnoremap <leader>v :vsplit<CR>
 nnoremap <leader>h :split<CR>
 map <F8> :%!astyle<CR>
-nnoremap <leader>s :w!<CR>
+nnoremap <C-s> :w!<CR>
 nnoremap <leader>q :wq!<CR>
 nnoremap <leader>f :set spell!<CR>
 nnoremap <leader>y "+Y
@@ -75,9 +75,6 @@ set softtabstop=2
 set foldmethod=indent
 set nofoldenable
 
-"Allow copy pasting across monitors
-set clipboard=unnamed
-
 "Needed for Airline to work
 set laststatus=2
 
@@ -98,3 +95,4 @@ set nowrap
 
 "Autload changes
 set autoread
+
