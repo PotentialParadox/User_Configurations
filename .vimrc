@@ -16,7 +16,9 @@ Plug 'easymotion/vim-easymotion'
 Plug 'Valloric/YouCompleteMe'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'terryma/vim-multiple-cursors'
-Plug 'klen/python-mode'
+Plug 'airblade/vim-gitgutter'
+"Plug 'klen/python-mode'
+Plug 'dkprice/vim-easygrep'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-repeat'
 Plug 'benmills/vimux'
@@ -31,7 +33,8 @@ colorscheme atom
 " Plugin Settings
 
 " YouCompleteMe
-"let g:ycm_confirm_extra_conf = 0
+let g:ycm_confirm_extra_conf = 0
+"let g:ycm_show_diagnostics_ui = 0
 
 " Nerdtree
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
@@ -46,7 +49,8 @@ nnoremap <leader>v :vsplit<CR>
 nnoremap <leader>h :split<CR>
 map <F8> :%!astyle<CR>
 nnoremap <C-s> :w!<CR>
-nnoremap <leader>q :wq!<CR>
+nnoremap <leader>q :cclose<CR>
+nnoremap <leader>o :copen<CR>
 nnoremap <leader>f :set spell!<CR>
 nnoremap <leader>y "+Y
 nnoremap <leader>p "+p
