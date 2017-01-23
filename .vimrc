@@ -76,7 +76,7 @@ set shiftwidth=2
 set softtabstop=2
 
 "Set folding
-set foldmethod=indent
+set foldmethod=marker
 set nofoldenable
 
 "Needed for Airline to work
