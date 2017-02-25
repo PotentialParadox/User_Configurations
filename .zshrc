@@ -11,15 +11,17 @@ source $g09root/g09/bsd/g09.profile
 # DDT
 export PATH="$PATH:/opt/allinea/forge/bin/"
 # Intel
-export PATH="$PATH:/opt/intel/compilers_and_libraries_2016/linux/bin/intel64/"
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/opt/intel/compilers_and_libraries_2016/linux/lib/intel64"
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/opt/intel/compilers_and_libraries_2016/linux/mkl/lib/intel64"
-export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/opt/intel/compilers_and_libraries_2016/linux/mpi/lib64"
+export PATH="$PATH:/opt/intel/compilers_and_libraries/linux/bin/intel64/"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/opt/intel/compilers_and_libraries/linux/lib/intel64"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/opt/intel/compilers_and_libraries/linux/mkl/lib/intel64_lin"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/opt/intel/compilers_and_libraries/linux/mpi/lib64"
+export MKLROOT=/opt/intel/compilers_and_libraries/linux/mkl
 # AMBER
+export AMBERHOME="/home/dustin/Downloads/amber16"
+export NAESMDHOME="/home/dustin/Documents/Research/SQM-NAESMD"
 test -f /home/dustin/Downloads/amber16/amber.sh && source /home/dustin/Downloads/amber16/amber.sh
 # CONDA
-export PATH="/opt/anaconda/bin/:$PATH"
-export PYTHONPATH="PYTHONPATH:/usr/local/lib"
+export PATH="/home/dustin/anaconda3/bin:$PATH"
 # Aliases
 alias vi='vim'
 alias banana="ssh -Y dustin@jarvisbanana.dyndns.org"
@@ -27,10 +29,17 @@ alias gator="ssh -Y dtracy@hpg2.rc.ufl.edu"
 alias mordor="ssh -Y dtracy@mordor.chem.ufl.edu"
 alias sshrsync="rsync -avz -e \"ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null\" --progress"
 alias tmux="tmux -2"
+alias naesmd="/home/dustin/Documents/Research/SQM-NAESMD/sqmceonaesmd.exe"
 # UFVPN
 export PATH="$PATH:/opt/cisco/anyconnect/bin"
+# Cuda
+export PATH="$PATH:/opt/cuda/bin"
+export LD_LIBRARY_PATH="$LD_LIBRARY_PATH:/opt/cuda/include"
 #Turn off Legacy Freezing
+export COMMY="/home/dustin/Documents/Research/NAESMD_AMBER/communism_build"
 stty -ixon
+#MYAPPs
+export MYAPPS="/home/dustin/Applications/myapps"
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -110,3 +119,8 @@ source $ZSH/oh-my-zsh.sh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 #
+alias ls="ls --color=auto"
+alias lk="ls -la --color=auto --block-size=KB"
+NC_ROOT="/home/dustin/Documents/scratch/NeuroChem-EnergyCalc"
+export LD_LIBRARY_PATH="$NC_ROOT/lib:$LD_LIBRARY_PATH"
+export PYTHONPATH="$NC_ROOT/lib:$PYTHONPATH"
