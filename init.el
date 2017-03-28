@@ -16,10 +16,16 @@
 
 ;;; === Begin Basics ===
 
+;;; Basic Font Choice
+
 ;; Scrolling
 (setq scroll-step 1)
 (setq scroll-conservatively 10000)
 (setq auto-window-vscroll nil)
+
+;;; === True Color Support in Terminal ===
+(use-package xterm-frobs
+  :ensure t)
 
 ;;; === Begin Path Management ===
 (use-package exec-path-from-shell
@@ -115,7 +121,6 @@
 (setq mode-require-final-newline nil)
 (yas-global-mode 1)
 ;;; === End YaSnippet ===
-
 
 ;;; !!!!!!! Begin C++ Configuration !!!!!!!!
 
@@ -214,6 +219,14 @@
 (setq TeX-parse-self t)
 (global-font-lock-mode 1)
 (add-hook 'latex-mode 'company-auctex-init)
+(load "auctex.el" nil t t)
+(load "preview-latex.el" nil t t)
+(setq ispell-program-name "aspell") ; could be ispell as well, depending on your preferences
+(setq ispell-dictionary "english") ; this can obviously be set to any language your spell-checking program supports
+
+(add-hook 'LaTeX-mode-hook 'flyspell-mode)
+(add-hook 'LaTeX-mode-hook 'flyspell-buffer)
+;;; !!!!!!! End Latex Configuration !!!!!!
 
 ;;; === Begin Theme ===
 
@@ -263,7 +276,10 @@
 (use-package monokai-theme
   :ensure t)
 (load-theme 'monokai t) 
+;; (load-theme `sanityinc-solarized-light t)
+(color-theme-approximate-on)
 (menu-bar-mode -1)
+
 
 
 ;;; === End Theme ===
@@ -280,6 +296,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(inhibit-startup-screen t)
+ '(package-selected-packages
+   (quote
+    (color-theme-approximate xterm-frobs color-theme-sanityinc-solarized monokai-theme golden-ratio company-auctex cmake-ide flycheck-irony company-irony-c-headers irony rtags cmake-mode yasnippet helm-projectile helm flycheck company magit evil-mc evil-nerd-commenter evil-leader evil bash-completion exec-path-from-shell use-package)))
  '(safe-local-variable-values
    (quote
     ((cmake-ide-build-dir . "/Users/dustin/Documents/USACO/holstein/bin")
