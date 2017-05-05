@@ -29,29 +29,29 @@
 ;;; === End Custom Keys ===
 
 ;;; === Begin Evil Configurations ===
-(require 'evil)
-(require 'evil-leader)
-(require 'evil-nerd-commenter)
-(require 'evil-mc)
-(evil-mode 1)
-(global-evil-mc-mode 1)
-(global-evil-leader-mode)
-(evil-leader/set-key
-  "q" `delete-window
-  "f" `helm-find-files
-  "r" `shell-command
-  "b" `helm-buffers-list
-  "v" `split-window-right
-  "h" `split-window-below
-  "e" `delete-other-windows
-  "s" `save-buffer
-  "ci" `evilnc-comment-or-uncomment-lines
-  "cl" `evilnc-quick-comment-or-uncomment-to-the-line
-  "ll" `evilnc-quick-comment-or-uncomment-to-the-line
-  "cc" `evilnc-copy-and-comment-lines
-  "cp" `evilnc-comment-or-uncomment-paragraphs
-  "cr" `comment-or-uncomment-region
-  "cv" `evilnc-toggle-invert-comment-line-by-line)
+;; (require 'evil)
+;; (require 'evil-leader)
+;; (require 'evil-nerd-commenter)
+;; (require 'evil-mc)
+;; (evil-mode 1)
+;; (global-evil-mc-mode 1)
+;; (global-evil-leader-mode)
+;; (evil-leader/set-key
+;;   "q" `delete-window
+;;   "f" `helm-find-files
+;;   "r" `shell-command
+;;   "b" `helm-buffers-list
+;;   "v" `split-window-right
+;;   "h" `split-window-below
+;;   "e" `delete-other-windows
+;;   "s" `save-buffer
+;;   "ci" `evilnc-comment-or-uncomment-lines
+;;   "cl" `evilnc-quick-comment-or-uncomment-to-the-line
+;;   "ll" `evilnc-quick-comment-or-uncomment-to-the-line
+;;   "cc" `evilnc-copy-and-comment-lines
+;;   "cp" `evilnc-comment-or-uncomment-paragraphs
+;;   "cr" `comment-or-uncomment-region
+;;   "cv" `evilnc-toggle-invert-comment-line-by-line)
 ;;; === End Evil Configurations ===
 
 ;;; === Begin Magit Configurations ===

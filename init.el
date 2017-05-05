@@ -24,10 +24,13 @@
 (setq auto-window-vscroll nil)
 
 ;;; === True Color Support in Terminal ===
-(use-package xterm-frobs
-  :ensure t)
+;; (use-package xterm-frobs
+;;   :ensure t)
 
-;;; === Begin Path Management ===
+;;; === Truncate lines by default ===
+(set-default `truncate-lines t)
+	     
+;;; === Begin Path management ===
 (use-package exec-path-from-shell
   :ensure t)
 (when (memq window-system '(mac ns))
@@ -38,7 +41,6 @@
 (use-package bash-completion
   :ensure t)
 (bash-completion-setup)
-(add-hook 'term-mode-hook 'evil-emacs-state)
 (setq explicit-shell-file-name "/bin/bash")
 ;;; === End Bash Completion ===
 
@@ -49,34 +51,41 @@
 (global-set-key (kbd "C-c j")  'windmove-down)
 ;;; === End Custom Keys ===
 
+;;; === Begin git-gutter.el ===
+(use-package git-gutter
+  :ensure t)
+(global-git-gutter-mode +1)
+;;; === End git-gutter.el ===
+
 ;;; === Begin Evil Configurations ===
-(use-package evil
-  :ensure t)
-(use-package evil-leader
-  :ensure t)
-(use-package evil-nerd-commenter
-  :ensure t)
-(use-package evil-mc
-  :ensure t)
-(evil-mode 1)
-(global-evil-mc-mode 1)
-(global-evil-leader-mode)
-(evil-leader/set-key
-  "q" `delete-window
-  "f" `helm-find-files
-  "r" `shell-command
-  "b" `helm-buffers-list
-  "v" `split-window-right
-  "h" `split-window-below
-  "e" `delete-other-windows
-  "s" `save-buffer
-  "ci" `evilnc-comment-or-uncomment-lines
-  "cl" `evilnc-quick-comment-or-uncomment-to-the-line
-  "ll" `evilnc-quick-comment-or-uncomment-to-the-line
-  "cc" `evilnc-copy-and-comment-lines
-  "cp" `evilnc-comment-or-uncomment-paragraphs
-  "cr" `comment-or-uncomment-region
-  "cv" `evilnc-toggle-invert-comment-line-by-line)
+;; (use-package evil
+;;   :ensure t)
+;; (use-package evil-leader
+;;   :ensure t)
+;; (use-package evil-nerd-commenter
+;;   :ensure t)
+;; (use-package evil-mc
+;;   :ensure t)
+;; (evil-mode 1)
+;; (global-evil-mc-mode 1)
+;; (global-evil-leader-mode)
+;; (evil-leader/set-key
+;;   "q" `delete-window
+;;   "f" `helm-find-files
+;;   "r" `shell-command
+;;   "b" `helm-buffers-list
+;;   "v" `split-window-right
+;;   "h" `split-window-below
+;;   "e" `delete-other-windows
+;;   "s" `save-buffer
+;;   "ci" `evilnc-comment-or-uncomment-lines
+;;   "cl" `evilnc-quick-comment-or-uncomment-to-the-line
+;;   "ll" `evilnc-quick-comment-or-uncomment-to-the-line
+;;   "cc" `evilnc-copy-and-comment-lines
+;;   "cp" `evilnc-comment-or-uncomment-paragraphs
+;;   "cr" `comment-or-uncomment-region
+;;   "cv" `evilnc-toggle-invert-comment-line-by-line)
+;; (add-hook 'term-mode-hook 'evil-emacs-state)
 ;;; === End Evil Configurations ===
 
 ;;; === Begin Magit Configurations ===
@@ -109,8 +118,8 @@
 (projectile-global-mode)
 (setq projectile-completion-system 'helm)
 (helm-projectile-on)
+(global-set-key (kbd "C-x C-b") `helm-buffers-list)
 ;;; === End Projectile Configuration ===
-
 
 ;;; === Begin YaSnippet ===
 (use-package yasnippet
@@ -234,7 +243,7 @@
 (setq ring-bell-function 'ignore)
 
 ;; Numbers
-(global-linum-mode 1)
+;; (global-linum-mode 1)
 
 ;; Adjust the windows dynamically
 (use-package golden-ratio
@@ -269,6 +278,9 @@
                                    "eshell-mode" "dired-mode"))
 
 (golden-ratio-mode)
+
+;; Set up lisp
+(setq inferior-lisp-program "/usr/bin/clisp")
 
 ;; Remove tool-bar
 (tool-bar-mode -1)
