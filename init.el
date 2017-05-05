@@ -41,7 +41,7 @@
 (use-package bash-completion
   :ensure t)
 (bash-completion-setup)
-(setq explicit-shell-file-name "/bin/bash")
+(setq explicit-shell-file-name "/bin/zsh")
 ;;; === End Bash Completion ===
 
 ;;; === Begin Custom Keys ===
