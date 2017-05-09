@@ -16,8 +16,6 @@
 
 ;;; === Begin Basics ===
 
-;;; Basic Font Choice
-
 ;; Scrolling
 (setq scroll-step 1)
 (setq scroll-conservatively 10000)
@@ -230,7 +228,7 @@
 (add-hook 'latex-mode 'company-auctex-init)
 (load "auctex.el" nil t t)
 (load "preview-latex.el" nil t t)
-(setq ispell-program-name "aspell") ; could be ispell as well, depending on your preferences
+(setq ispell-program-name "ispell") ; could be ispell as well, depending on your preferences
 (setq ispell-dictionary "english") ; this can obviously be set to any language your spell-checking program supports
 
 (add-hook 'LaTeX-mode-hook 'flyspell-mode)
