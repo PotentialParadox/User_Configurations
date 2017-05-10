@@ -89,6 +89,7 @@
 ;;; === Begin Magit Configurations ===
 (use-package magit
   :ensure t)
+(global-set-key (kbd "C-c s")  'magit-status)
 ;;; === End Magit Configurations ===
 
 ;;; === Begin Company Initalization ===
