@@ -27,7 +27,8 @@
 
 ;;; === Truncate lines by default ===
 (set-default `truncate-lines t)
-	     
+
+
 ;;; === Begin Path management ===
 (use-package exec-path-from-shell
   :ensure t)
@@ -49,6 +50,14 @@
 (global-set-key (kbd "C-c j")  'windmove-down)
 ;;; === End Custom Keys ===
 
+;;; === Begin Multiple Cursors ===
+(use-package multiple-cursors
+  :ensure t)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+;;; === End Multiple Cursors ===
+
 ;;; === Begin git-gutter.el ===
 (use-package git-gutter
   :ensure t)
@@ -56,8 +65,8 @@
 ;;; === End git-gutter.el ===
 
 ;;; === Begin Evil Configurations ===
-;; (use-package evil
-;;   :ensure t)
+(use-package evil
+  :ensure t)
 ;; (use-package evil-leader
 ;;   :ensure t)
 ;; (use-package evil-nerd-commenter
@@ -220,6 +229,11 @@
 
 ;;; !!!!!!! End C++ Configuration !!!!!!!!
 
+;;; !!!!!!! Begin Org Mode !!!!!!
+(use-package org
+  :ensure t)
+;;; !!!!!!! End Org Mode !!!!!!
+
 ;;; !!!!!!! Begin Latex Configuration !!!!!!
 (use-package company-auctex
   :ensure t)
@@ -245,38 +259,38 @@
 ;; (global-linum-mode 1)
 
 ;; Adjust the windows dynamically
-(use-package golden-ratio
-  :ensure t)
+;; (use-package golden-ratio
+;;   :ensure t)
 
-(add-to-list 'golden-ratio-exclude-modes "ediff-mode")
-(add-to-list 'golden-ratio-exclude-modes "helm-mode")
-(add-to-list 'golden-ratio-exclude-modes "dired-mode")
-(add-to-list 'golden-ratio-inhibit-functions 'pl/helm-alive-p)
+;; (add-to-list 'golden-ratio-exclude-modes "ediff-mode")
+;; (add-to-list 'golden-ratio-exclude-modes "helm-mode")
+;; (add-to-list 'golden-ratio-exclude-modes "dired-mode")
+;; (add-to-list 'golden-ratio-inhibit-functions 'pl/helm-alive-p)
 
-(defun pl/helm-alive-p ()
-  (if (boundp 'helm-alive-p)
-      (symbol-value 'helm-alive-p)))
+;; (defun pl/helm-alive-p ()
+;;   (if (boundp 'helm-alive-p)
+;;       (symbol-value 'helm-alive-p)))
 
-;; do not enable golden-raio in thses modes
-(setq golden-ratio-exclude-modes '("ediff-mode"
-                                   "gud-mode"
-                                   "gdb-locals-mode"
-                                   "gdb-registers-mode"
-                                   "gdb-breakpoints-mode"
-                                   "gdb-threads-mode"
-                                   "gdb-frames-mode"
-                                   "gdb-inferior-io-mode"
-                                   "gud-mode"
-                                   "gdb-inferior-io-mode"
-                                   "gdb-disassembly-mode"
-                                   "gdb-memory-mode"
-                                   "magit-log-mode"
-                                   "magit-reflog-mode"
-                                   "magit-status-mode"
-                                   "IELM"
-                                   "eshell-mode" "dired-mode"))
+;; ;; do not enable golden-raio in thses modes
+;; (setq golden-ratio-exclude-modes '("ediff-mode"
+;;                                    "gud-mode"
+;;                                    "gdb-locals-mode"
+;;                                    "gdb-registers-mode"
+;;                                    "gdb-breakpoints-mode"
+;;                                    "gdb-threads-mode"
+;;                                    "gdb-frames-mode"
+;;                                    "gdb-inferior-io-mode"
+;;                                    "gud-mode"
+;;                                    "gdb-inferior-io-mode"
+;;                                    "gdb-disassembly-mode"
+;;                                    "gdb-memory-mode"
+;;                                    "magit-log-mode"
+;;                                    "magit-reflog-mode"
+;;                                    "magit-status-mode"
+;;                                    "IELM"
+;;                                    "eshell-mode" "dired-mode"))
 
-(golden-ratio-mode)
+;; (golden-ratio-mode)
 
 ;; Set up lisp
 (setq inferior-lisp-program "/usr/bin/clisp")
