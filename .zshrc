@@ -127,3 +127,15 @@ alias lk="ls -la --color=auto --block-size=KB"
 NC_ROOT="/home/dustin/Documents/scratch/NeuroChem-EnergyCalc"
 export LD_LIBRARY_PATH="$NC_ROOT/lib:$LD_LIBRARY_PATH"
 export PYTHONPATH="$NC_ROOT/lib:$PYTHONPATH"
+# Emacs Support
+if [ -n "$INSIDE_EMACS" ]; then
+    # function to set the dired and host for ansiterm
+    set_eterm_dir() {
+        print -P "\033AnSiTu %n"
+        print -P "\033AnSiTh" "$(hostname -f)"
+        print -P "\033AnSiTc %d"
+    }
+
+    # call prmptcmd whenever prompt is redrawn
+    precmd_functions=($precmd_functions set_eterm_dir)
+fi
