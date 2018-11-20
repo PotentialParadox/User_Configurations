@@ -13,7 +13,7 @@ Note that most servers have these already available.
 ### Dependencies
 For ubuntu, you only need to copy and paste this into your terminal
 ```
-sudo apt-get install vim tmux curl clang cmake
+sudo apt-get install vim tmux curl clang-4.0 cmake
 ```
 For mac, <a href="brew.sh">Homebrew</a> will be used. 
 In the following replace username with your username.
@@ -31,7 +31,7 @@ git clone https://github.com/PotentialParadox/User\_Configurations && ~/User\_Co
 ```
 Open vim, (ignore any initial errors for now) and type in the command
 ```
-PlugInstall
+:PlugInstall
 ```
 ## Get the solarized theme working
 You now need to move the color theme folder over, this can be done with the command
