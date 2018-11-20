@@ -1,7 +1,10 @@
 " Use 256 colors
-" set t_Co=256
-set termguicolors
-set t_ut=
+if has('unix')
+ set t_Co=256
+endif
+if has('macunix')
+  set termguicolors
+endif
 
 " Initializing plugins
 

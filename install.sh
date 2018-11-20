@@ -9,3 +9,7 @@ if [ ! -f ~/.vim/autoload/plug.vim ]; then
   curl -fLo ~/.vim/autoload/plug.vim --create-dirs \
       https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 fi
+
+mkdir ~/.vim/colors
+cp ~/User_Configurations/atom.vim ~/.vim/colors/
+
