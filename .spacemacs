@@ -31,8 +31,14 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     javascript
+     octave
+     yaml
+     vimscript
      markdown
+     csv
+     php
+     html
+     javascript
      python
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
@@ -40,32 +46,46 @@ values."
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      helm
-     auto-completion
+     (auto-completion :variables
+                      auto-completion-return-key-behavior 'complete
+                      auto-completion-tab-key-behavior 'cycle
+                      auto-completion-complete-with-key-sequence nil
+                      auto-completion-complete-with-key-sequence-delay 0.1
+                      auto-completion-private-snippets-directory nil)
+
      ;; better-defaults
      emacs-lisp
      git
+     haskell
      ;; markdown
-     ;; org
-     ;; (shell :variables
-     ;;        shell-default-height 30
-     ;;        shell-default-position 'bottom)
-     ;; spell-checking
-     ;; syntax-checking
+     (org :variables
+          org-babel-load-languages '((emacs-lisp . t)
+                                     (python . t))
+          )
+     (shell :variables
+            shell-default-position 'full
+            shell-default-full-span nil
+            shell-default-term-shell "/bin/zsh")
+     spell-checking
+     syntax-checking
      version-control
-     themes-megapack
-     shell
      latex
      syntax-checking
+     plantuml
+     pdf-tools
+     common-lisp
+     themes-megapack
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
-   dotspacemacs-additional-packages '()
+   dotspacemacs-additional-packages '(
+                                      )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '()
+   dotspacemacs-excluded-packages '(smartparens)
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -97,7 +117,7 @@ values."
    ;; when the current branch is not `develop'. Note that checking for
    ;; new versions works via git commands, thus it calls GitHub services
    ;; whenever you start Emacs. (default nil)
-   dotspacemacs-check-for-update nil
+   dotspacemacs-check-for-update 1
    ;; If non-nil, a form that evaluates to a package directory. For example, to
    ;; use different package directories for different Emacs versions, set this
    ;; to `emacs-version'.
@@ -133,8 +153,9 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(monokai
-                         spacemacs-light)
+   dotspacemacs-themes '(spacemacs-light
+                         monokai
+                         planet)
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
@@ -307,23 +328,6 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
-
-  ;; Set the version control module to git-gutter
-  '(version-control :variables
-                    version-control-diff-tool 'git-gutter)
-
-  ;; Autosave file to the .emacs.d directory
-  (setq auto-save-file-name-transforms
-        `((".*" ,(concat user-emacs-directory "auto-save/") t))) 
-
-  ;; Use ansi-term as my default terminal
-  (setq-default dotspacemacs-configuration-layers
-                '((shell :variables shell-default-shell 'ansi-term)))
-
-  ;; Use zsh as my default shell
-  (setq-default dotspacemacs-configuration-layers
-                '((shell :variables shell-default-term-shell "/bin/zsh")))
-
   )
 
 (defun dotspacemacs/user-config ()
@@ -333,14 +337,78 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
-;;; === Begin Multiple Cursors ===
-  (use-package multiple-cursors
-    :ensure t)
-  (global-set-key (kbd "C->") 'mc/mark-next-like-this)
-  (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
-  (global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
-;;; === End Multiple Cursors ===
+  (spacemacs/set-leader-keys "or" `rename-buffer)
+  (spacemacs/set-leader-keys "os" `ansi-term)
+  (spacemacs/set-leader-keys "ob" `eww-back-url)
+  (spacemacs/set-leader-keys "of" `eww-forward-url)
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize))
+  (exec-path-from-shell-copy-env "LD_LIBRARY_PATH")
+  (exec-path-from-shell-copy-env "PYTHONPATH")
+  (exec-path-from-shell-copy-env "g09root")
+  (exec-path-from-shell-copy-env "GAUSS_SCRDIR")
+  (exec-path-from-shell-copy-env "GV_DIR")
+  (exec-path-from-shell-copy-env "GAUSS_EXEDIR")
+  (exec-path-from-shell-copy-env "GAUSS_LEXEDIR")
+  (exec-path-from-shell-copy-env "GAUSS_ARCHDIR")
+  (exec-path-from-shell-copy-env "GAUSS_BSDDIR")
+  (exec-path-from-shell-copy-env "G09BASIS")
+  (exec-path-from-shell-copy-env "G09BASIS")
+  (exec-path-from-shell-copy-env "PS")
+  (exec-path-from-shell-copy-env "AMBERHOME")
+  (exec-path-from-shell-copy-env "NAESMDHOME")
+  (exec-path-from-shell-copy-env "MKLROOT")
+  (spacemacs|disable-company eshell-mode)
+  (set-default 'truncate-lines t)
+  (setq org-plan "/home/dustin/plantuml.jar")
+  (setq-default evil-search-module 'evil-search)
+  (add-hook `org-mode-hook `turn-on-auto-fill)
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
+  (add-to-list 'exec-path "~/.local/bin/")
+  (setq tab-always-indent `complete)
+  (add-hook 'LaTeX-mode-hook (lambda ()
+                               (TeX-fold-mode 1)))
+
+  (defun my-find-file-fn (file)
+    (let* (
+           ;; regexp-matchp-fn from:  https://github.com/kentaro/auto-save-buffers-enhanced
+           ;; regexp-matchp-fn modified by @sds:  http://stackoverflow.com/a/20343715/2112489
+           (regexp-matchp-fn
+            (lambda (regexps string)
+              (and string
+                   (catch 'matched
+                     (let ((inhibit-changing-match-data t))
+                       (dolist (regexp regexps)
+                         (when (string-match regexp string)
+                           (throw 'matched t))))))))
+           (ext (file-name-extension file))
+           (regex '("txt" "el" "png")))
+      (if (funcall regexp-matchp-fn regex ext)
+          (find-file-other-frame file)
+        (find-file-other-window file))))
+
+  (setq org-link-frame-setup '(
+                               (vm . vm-visit-folder-other-frame)
+                               (vm-imap . vm-visit-imap-folder-other-frame)
+                               (gnus . org-gnus-no-new-news)
+                               (file . my-find-file-fn)
+                               (wl . wl-other-frame)))
+
   )
+
+;; (setenv "AMBERHOME" "/home/dustin/Applications/amber")
+;; (setenv "AMBERLIBPATH" (concat (getenv "AMBERHOME") "/lib"))
+;; (setenv "LD_LIBRARY_PATH" (concat (getenv "AMBERLIBPATH") ":" (getenv "LD_LIBRARY_PATH")))
+
+;; (setenv "NAESMDHOME" "/home/dustin/Applications/nexmd")
+;; (setenv "LD_LIBRARY_PATH" (concat (getenv "LD_LIBRARY_PATH") "/opt/intel/compilers_and_libraries/linux/lib/intel64"))
+;; (setenv "LD_LIBRARY_PATH" (concat (getenv "LD_LIBRARY_PATH") ":/opt/intel/compilers_and_libraries/linux/mkl/lib/intel64_lin"))
+;; (setenv "LD_LIBRARY_PATH" (concat (getenv "LD_LIBRARY_PATH") ":/opt/intel/compilers_and_libraries/linux/mpi/lib64"))
+;; (setenv "MKLROOT" "/opt/intel/compilers_and_libraries/linux/mkl")
+;; (setenv "PS" "/home/dustin/Applications/python_scripts")
+;; (setenv "PATH" (concat (getenv "PATH") ":/opt/intel/compilers_and_libraries/linux/bin/intel64/"))
+;; (setenv "g09root" "/home/dustin/Applications")
+;; (setenv "GAUSS_SCRDIR" "/temp")
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -349,12 +417,15 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-agenda-files
+   (quote
+    ("~/Dropbox/orgs/weekly_plan.org" "~/Dropbox/orgs/25_5.org")))
  '(package-selected-packages
    (quote
-    (web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor js2-mode js-doc company-tern dash-functional tern coffee-mode mmm-mode markdown-toc markdown-mode gh-md multiple-cursors flycheck-pos-tip pos-tip flycheck company-auctex auctex-latexmk auctex helm-company helm-c-yasnippet fuzzy company-statistics company-anaconda company auto-yasnippet yasnippet ac-ispell auto-complete xterm-color shell-pop multi-term eshell-z eshell-prompt-extras esh-help zonokai-theme zenburn-theme zen-and-art-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme tronesque-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme solarized-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme pastels-on-dark-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme niflheim-theme naquadah-theme mustang-theme monokai-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme firebelly-theme farmhouse-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode helm-pydoc cython-mode anaconda-mode pythonic smeargle orgit magit-gitflow helm-gitignore gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter evil-magit magit magit-popup git-commit with-editor diff-hl ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint info+ indent-guide hydra hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation hide-comnt help-fns+ helm-themes helm-swoop helm-projectile helm-mode-manager helm-make projectile pkg-info epl helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu highlight elisp-slime-nav dumb-jump f s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed dash aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async))))
+    (yaml-mode zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme exotica-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme solarized-theme vimrc-mode dactyl-mode eimp mmm-mode markdown-toc markdown-mode gh-md csv-mode phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode intero hlint-refactor hindent helm-hoogle haskell-snippets flycheck-haskell company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode wgrep smex ivy-hydra flyspell-correct-ivy counsel-projectile counsel swiper ivy flyspell-correct-helm flyspell-correct auto-dictionary slime-company slime common-lisp-snippets pdf-tools tablist yapfify xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org tagedit spaceline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin plantuml-mode pip-requirements persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file neotree multi-term move-text monokai-theme magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode json-mode js2-refactor js-doc indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump diminish diff-hl define-word cython-mode company-web company-tern company-statistics company-auctex company-anaconda column-enforce-mode coffee-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((((class color) (min-colors 257)) (:foreground "#F8F8F2" :background "#272822")) (((class color) (min-colors 89)) (:foreground "#F5F5F5" :background "#1B1E1C")))))
+ )
