@@ -36,6 +36,7 @@ values."
      vimscript
      markdown
      csv
+     helm
      php
      html
      javascript
@@ -45,7 +46,6 @@ values."
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
-     helm
      (auto-completion :variables
                       auto-completion-return-key-behavior 'complete
                       auto-completion-tab-key-behavior 'cycle
@@ -75,6 +75,10 @@ values."
      pdf-tools
      common-lisp
      themes-megapack
+     ;; (google-calendar :variables
+     ;;                  org-gcal-client-id "1024070019760-igugslssvul3gut6stc9q4ns036u5h98.apps.googleusercontent.com"
+     ;;                  org-gcal-client-secret "92SEl0YJBuoLEZx4Jrr2oqYC"
+     ;;                  org-gcal-file-alist '(("dtracy.uf@gmail.com" .  "~/Dropbox/orgs/gcal.org")))
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -341,6 +345,8 @@ you should place your code here."
   (spacemacs/set-leader-keys "os" `ansi-term)
   (spacemacs/set-leader-keys "ob" `eww-back-url)
   (spacemacs/set-leader-keys "of" `eww-forward-url)
+  (spacemacs/set-leader-keys "oy" `org-store-link)
+  (spacemacs/set-leader-keys "op" `org-insert-link)
   (when (memq window-system '(mac ns x))
     (exec-path-from-shell-initialize))
   (exec-path-from-shell-copy-env "LD_LIBRARY_PATH")
@@ -417,12 +423,91 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#272822" "#F92672" "#A6E22E" "#E6DB74" "#66D9EF" "#FD5FF0" "#A1EFE4" "#F8F8F2"])
+ '(compilation-message-face (quote default))
+ '(evil-want-Y-yank-to-eol nil)
+ '(fci-rule-color "#3C3D37" t)
+ '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
+ '(highlight-tail-colors
+   (quote
+    (("#3C3D37" . 0)
+     ("#679A01" . 20)
+     ("#4BBEAE" . 30)
+     ("#1DB4D0" . 50)
+     ("#9A8F21" . 60)
+     ("#A75B00" . 70)
+     ("#F309DF" . 85)
+     ("#3C3D37" . 100))))
+ '(magit-diff-use-overlays nil)
+ '(org-agenda-custom-commands
+   (quote
+    (("n" "All NEXT Items"
+      ((todo "PROJECT" nil)
+       (todo "NEXT" nil)
+       (todo "ONGOING" nil)
+       (todo "WAITING" nil))
+      nil))))
  '(org-agenda-files
    (quote
-    ("~/Dropbox/orgs/weekly_plan.org" "~/Dropbox/orgs/25_5.org")))
+    ("~/Dropbox/orgs/phd.org" "~/Dropbox/orgs/cooking.org" "~/Dropbox/orgs/teaching.org" "~/Dropbox/orgs/husband.org" "~/Dropbox/orgs/programming.org" "~/Dropbox/orgs/daily.org")))
+ '(org-bullets-bullet-list (quote ("✙" "♱" "♰" "☥")))
+ '(org-capture-templates
+   (quote
+    (("h" "Husband Template")
+     ("ht" "Husband Todo" entry
+      (file+headline "~/Dropbox/orgs/husband.org" "In")
+      (file "~/Dropbox/orgs/templates/tpl-todo.txt"))
+     ("p" "PhD")
+     ("pt" "TODO PhD" entry
+      (file+headline "~/Dropbox/orgs/phd.org" "In")
+      (file "~/Dropbox/orgs/templates/tpl-todo.txt"))
+     ("c" "Cooking")
+     ("ct" "Cooking Todo" entry
+      (file+headline "~/Dropbox/orgs/cooking.org" "Recipes")
+      (file "~/Dropbox/orgs/templates/food-todo.txt"))
+     ("t" "Teaching")
+     ("tl" "New Lesson" entry
+      (file+headline "~/Dropbox/orgs/teaching.org" "In")
+      (file "~/Dropbox/orgs/templates/lesson-todo.txt"))
+     ("a" "Schedule an appointment" entry
+      (file "~/Dropbox/orgs/gcal.org")
+      (file "~/Dropbox/orgs/templates/gcal-todo.txt")))))
+ '(org-log-into-drawer t)
+ '(org-outline-path-complete-in-steps nil)
+ '(org-refile-allow-creating-parent-nodes (quote confirm))
+ '(org-refile-targets (quote ((org-agenda-files :level . 1))))
+ '(org-refile-use-outline-path (quote file))
  '(package-selected-packages
    (quote
-    (yaml-mode zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme exotica-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme solarized-theme vimrc-mode dactyl-mode eimp mmm-mode markdown-toc markdown-mode gh-md csv-mode phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode intero hlint-refactor hindent helm-hoogle haskell-snippets flycheck-haskell company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode wgrep smex ivy-hydra flyspell-correct-ivy counsel-projectile counsel swiper ivy flyspell-correct-helm flyspell-correct auto-dictionary slime-company slime common-lisp-snippets pdf-tools tablist yapfify xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org tagedit spaceline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin plantuml-mode pip-requirements persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file neotree multi-term move-text monokai-theme magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode json-mode js2-refactor js-doc indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump diminish diff-hl define-word cython-mode company-web company-tern company-statistics company-auctex company-anaconda column-enforce-mode coffee-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell))))
+    (lv request-deferred deferred calfw org-gcal yaml-mode zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme exotica-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme solarized-theme vimrc-mode dactyl-mode eimp mmm-mode markdown-toc markdown-mode gh-md csv-mode phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode intero hlint-refactor hindent helm-hoogle haskell-snippets flycheck-haskell company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode wgrep smex ivy-hydra flyspell-correct-ivy counsel-projectile counsel swiper ivy flyspell-correct-helm flyspell-correct auto-dictionary slime-company slime common-lisp-snippets pdf-tools tablist yapfify xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org tagedit spaceline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin plantuml-mode pip-requirements persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file neotree multi-term move-text monokai-theme magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode json-mode js2-refactor js-doc indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump diminish diff-hl define-word cython-mode company-web company-tern company-statistics company-auctex company-anaconda column-enforce-mode coffee-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
+ '(pos-tip-background-color "#FFFACE")
+ '(pos-tip-foreground-color "#272822")
+ '(vc-annotate-background nil)
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#F92672")
+     (40 . "#CF4F1F")
+     (60 . "#C26C0F")
+     (80 . "#E6DB74")
+     (100 . "#AB8C00")
+     (120 . "#A18F00")
+     (140 . "#989200")
+     (160 . "#8E9500")
+     (180 . "#A6E22E")
+     (200 . "#729A1E")
+     (220 . "#609C3C")
+     (240 . "#4E9D5B")
+     (260 . "#3C9F79")
+     (280 . "#A1EFE4")
+     (300 . "#299BA6")
+     (320 . "#2896B5")
+     (340 . "#2790C3")
+     (360 . "#66D9EF"))))
+ '(vc-annotate-very-old-color nil)
+ '(weechat-color-list
+   (quote
+    (unspecified "#272822" "#3C3D37" "#F70057" "#F92672" "#86C30D" "#A6E22E" "#BEB244" "#E6DB74" "#40CAE4" "#66D9EF" "#FB35EA" "#FD5FF0" "#74DBCD" "#A1EFE4" "#F8F8F2" "#F8F8F0"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
