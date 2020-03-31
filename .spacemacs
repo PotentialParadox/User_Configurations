@@ -31,65 +31,68 @@ values."
    ;; List of configuration layers to load.
    dotspacemacs-configuration-layers
    '(
-     octave
-     yaml
-     vimscript
-     markdown
-     csv
-     helm
-     php
-     html
+     shell-scripts
      javascript
-     python
+     csv
+     ranger
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
+     bibtex
+     haskell
+     ess
+     (python :variables
+             python-backend 'anaconda
+             python-fill-column 99
+             python-enable-yapf-format-on-save t
+             python-auto-set-local-pyvenv-virtualenv 'on-visit)
+     html
+     helm
      (auto-completion :variables
-                      auto-completion-return-key-behavior 'complete
-                      auto-completion-tab-key-behavior 'cycle
-                      auto-completion-complete-with-key-sequence nil
-                      auto-completion-complete-with-key-sequence-delay 0.1
-                      auto-completion-private-snippets-directory nil)
-
+                      auto-completion-private-snippets-directory nil
+                      auto-completion-enable-help-tooltip t
+                      auto-completion-return-key-behavior nil
+                      auto-completion-complete-with-key-sequence "jk"
+                      auto-completion-complete-with-key-sequence-delay 0.2
+                      auto-completion-enable-sort-by-usage t)
      ;; better-defaults
      emacs-lisp
      git
-     haskell
-     ;; markdown
+     markdown
      (org :variables
-          org-babel-load-languages '((emacs-lisp . t)
-                                     (python . t))
+          org-confirm-babel-evaluate 'nil
+          org-deadline-warning-days 21
           )
+
      (shell :variables
-            shell-default-position 'full
-            shell-default-full-span nil
-            shell-default-term-shell "/bin/zsh")
+            shell-default-height 30
+            shell-default-position 'bottom)
      spell-checking
-     syntax-checking
-     version-control
-     latex
-     syntax-checking
-     plantuml
      pdf-tools
-     common-lisp
-     themes-megapack
-     ;; (google-calendar :variables
-     ;;                  org-gcal-client-id "1024070019760-igugslssvul3gut6stc9q4ns036u5h98.apps.googleusercontent.com"
-     ;;                  org-gcal-client-secret "92SEl0YJBuoLEZx4Jrr2oqYC"
-     ;;                  org-gcal-file-alist '(("dtracy.uf@gmail.com" .  "~/Dropbox/orgs/gcal.org")))
+     ;; syntax-checking
+     version-control
+     (latex :variables
+            TeX-view-program-selection '((output-pdf "PDF Tools"))
+            TeX-view-program-list '(("PDF Tools" TeX-pdf-tools-sync-view))
+            latex-enable-folding t
+            TeX-source-correlate-start-server t) ;; not sure if last line is neccessary
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages, then consider creating a layer. You can also put the
    ;; configuration in `dotspacemacs/user-config'.
    dotspacemacs-additional-packages '(
+                                      ;; Aesthetics
+                                      doom-themes
+                                      fontawesome
+                                      org-bullets
                                       )
    ;; A list of packages that cannot be updated.
    dotspacemacs-frozen-packages '()
    ;; A list of packages that will not be installed and loaded.
-   dotspacemacs-excluded-packages '(smartparens)
+   dotspacemacs-excluded-packages '()
    ;; Defines the behaviour of Spacemacs when installing packages.
    ;; Possible values are `used-only', `used-but-keep-unused' and `all'.
    ;; `used-only' installs only explicitly used packages and uninstall any
@@ -121,7 +124,7 @@ values."
    ;; when the current branch is not `develop'. Note that checking for
    ;; new versions works via git commands, thus it calls GitHub services
    ;; whenever you start Emacs. (default nil)
-   dotspacemacs-check-for-update 1
+   dotspacemacs-check-for-update nil
    ;; If non-nil, a form that evaluates to a package directory. For example, to
    ;; use different package directories for different Emacs versions, set this
    ;; to `emacs-version'.
@@ -157,15 +160,19 @@ values."
    ;; List of themes, the first of the list is loaded when spacemacs starts.
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
-   dotspacemacs-themes '(spacemacs-light
-                         monokai
-                         planet)
+   dotspacemacs-themes '(
+                         spacemacs-light
+                         doom-material
+                         doom-wilmersdorf
+                         doom-Iosvkem
+                         spacemacs-dark
+                         )
    ;; If non nil the cursor color matches the state color in GUI Emacs.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font, or prioritized list of fonts. `powerline-scale' allows to
    ;; quickly tweak the mode-line size to make separators look not too crappy.
-   dotspacemacs-default-font '("Source Code Pro"
-                               :size 13
+   dotspacemacs-default-font '("Ubuntu Mono"
+                               :size 15
                                :weight normal
                                :width normal
                                :powerline-scale 1.1)
@@ -332,6 +339,21 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
+
+  (defun my-org-mode-hook ()
+    (setq-local yas-buffer-local-condition
+                '(not (org-in-src-block-p t))))
+  (add-hook 'org-mode-hook #'my-org-mode-hook)
+
+
+  (defun yas-org-very-safe-expand ()
+    (let ((yas-fallback-behavior 'return-nil)) (yas-expand)))
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (add-to-list 'org-tab-first-hook 'yas-org-very-safe-expand)
+              (define-key yas-keymap [tab] 'yas-next-field)))
+
+
   )
 
 (defun dotspacemacs/user-config ()
@@ -341,29 +363,17 @@ layers configuration.
 This is the place where most of your configurations should be done. Unless it is
 explicitly specified that a variable should be set before a package is loaded,
 you should place your code here."
+  (require 'fontawesome)
+  (require 'org-depend)
   (spacemacs/set-leader-keys "or" `rename-buffer)
   (spacemacs/set-leader-keys "os" `ansi-term)
+  (setq explicit-shell-file-name "/usr/bin/zsh")
   (spacemacs/set-leader-keys "ob" `eww-back-url)
   (spacemacs/set-leader-keys "of" `eww-forward-url)
   (spacemacs/set-leader-keys "oy" `org-store-link)
   (spacemacs/set-leader-keys "op" `org-insert-link)
-  (when (memq window-system '(mac ns x))
-    (exec-path-from-shell-initialize))
-  (exec-path-from-shell-copy-env "LD_LIBRARY_PATH")
-  (exec-path-from-shell-copy-env "PYTHONPATH")
-  (exec-path-from-shell-copy-env "g09root")
-  (exec-path-from-shell-copy-env "GAUSS_SCRDIR")
-  (exec-path-from-shell-copy-env "GV_DIR")
-  (exec-path-from-shell-copy-env "GAUSS_EXEDIR")
-  (exec-path-from-shell-copy-env "GAUSS_LEXEDIR")
-  (exec-path-from-shell-copy-env "GAUSS_ARCHDIR")
-  (exec-path-from-shell-copy-env "GAUSS_BSDDIR")
-  (exec-path-from-shell-copy-env "G09BASIS")
-  (exec-path-from-shell-copy-env "G09BASIS")
-  (exec-path-from-shell-copy-env "PS")
-  (exec-path-from-shell-copy-env "AMBERHOME")
-  (exec-path-from-shell-copy-env "NAESMDHOME")
-  (exec-path-from-shell-copy-env "MKLROOT")
+  (spacemacs/set-leader-keys "oa" `org-agenda)
+  (spacemacs/set-leader-keys "oc" `org-capture)
   (spacemacs|disable-company eshell-mode)
   (set-default 'truncate-lines t)
   (setq org-plan "/home/dustin/plantuml.jar")
@@ -374,47 +384,60 @@ you should place your code here."
   (setq tab-always-indent `complete)
   (add-hook 'LaTeX-mode-hook (lambda ()
                                (TeX-fold-mode 1)))
+  (setq-default helm-display-function 'helm-default-display-buffer)
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)
+     (shell . t)
+     (latex . t)
+     (plantuml . t)
+     (matlab . t)))
 
-  (defun my-find-file-fn (file)
-    (let* (
-           ;; regexp-matchp-fn from:  https://github.com/kentaro/auto-save-buffers-enhanced
-           ;; regexp-matchp-fn modified by @sds:  http://stackoverflow.com/a/20343715/2112489
-           (regexp-matchp-fn
-            (lambda (regexps string)
-              (and string
-                   (catch 'matched
-                     (let ((inhibit-changing-match-data t))
-                       (dolist (regexp regexps)
-                         (when (string-match regexp string)
-                           (throw 'matched t))))))))
-           (ext (file-name-extension file))
-           (regex '("txt" "el" "png")))
-      (if (funcall regexp-matchp-fn regex ext)
-          (find-file-other-frame file)
-        (find-file-other-window file))))
+  ;; Clockout with exit
+  (defun my/org-clock-query-out ()
+    "Ask the user before clocking out.
+This is a useful function for adding to `kill-emacs-query-functions'."
+    (if (and
+         (featurep 'org-clock)
+         (funcall 'org-clocking-p)
+         (y-or-n-p "You are currently clocking time, clock out? "))
+        (org-clock-out)
+      t)) ;; only fails on keyboard quit or error
 
-  (setq org-link-frame-setup '(
-                               (vm . vm-visit-folder-other-frame)
-                               (vm-imap . vm-visit-imap-folder-other-frame)
-                               (gnus . org-gnus-no-new-news)
-                               (file . my-find-file-fn)
-                               (wl . wl-other-frame)))
+  ;; timeclock.el puts this on the wrong hook!
+  (add-hook 'kill-emacs-query-functions 'my/org-clock-query-out)
+
+  ;; Org Mode: Aesthetics
+  (add-hook 'org-mode-hook (lambda ()
+                             "Beautify Org Checkbox Symbol"
+                             (push '("[ ]" .  "☐") prettify-symbols-alist)
+                             (push '("[X]" . "☑" ) prettify-symbols-alist)
+                             (push '("[-]" . "❍" ) prettify-symbols-alist)
+                             (prettify-symbols-mode)))
+
+  ;; Activate PlantUML
+  (setq org-plantuml-jar-path
+        "/home/dustin/Applications/plantuml/plantuml.jar")
+
+  ;; Truncate lines for fish
+  (add-hook 'term-mode-hook 'toggle-truncate-lines)
+
+  ;;default ess to use R (via https://gist.github.com/benmarwick/ee0f400b14af87a57e4a)
+  (require 'ess-mode)
+  (defun ess-set-language ()
+    (setq-default ess-language "R")
+    (setq ess-language "R")
+    )
+  (defun then_R_operator ()
+    "R - %>% operator or 'then' pipe operator"
+    (interactive)
+    (just-one-space 1)
+    (insert "%>%")
+    (reindent-then-newline-and-indent))
+  (define-key ess-mode-map (kbd "C-|") 'then_R_operator)
+  (define-key inferior-ess-mode-map (kbd "C-|") 'then_R_operator)
 
   )
-
-;; (setenv "AMBERHOME" "/home/dustin/Applications/amber")
-;; (setenv "AMBERLIBPATH" (concat (getenv "AMBERHOME") "/lib"))
-;; (setenv "LD_LIBRARY_PATH" (concat (getenv "AMBERLIBPATH") ":" (getenv "LD_LIBRARY_PATH")))
-
-;; (setenv "NAESMDHOME" "/home/dustin/Applications/nexmd")
-;; (setenv "LD_LIBRARY_PATH" (concat (getenv "LD_LIBRARY_PATH") "/opt/intel/compilers_and_libraries/linux/lib/intel64"))
-;; (setenv "LD_LIBRARY_PATH" (concat (getenv "LD_LIBRARY_PATH") ":/opt/intel/compilers_and_libraries/linux/mkl/lib/intel64_lin"))
-;; (setenv "LD_LIBRARY_PATH" (concat (getenv "LD_LIBRARY_PATH") ":/opt/intel/compilers_and_libraries/linux/mpi/lib64"))
-;; (setenv "MKLROOT" "/opt/intel/compilers_and_libraries/linux/mkl")
-;; (setenv "PS" "/home/dustin/Applications/python_scripts")
-;; (setenv "PATH" (concat (getenv "PATH") ":/opt/intel/compilers_and_libraries/linux/bin/intel64/"))
-;; (setenv "g09root" "/home/dustin/Applications")
-;; (setenv "GAUSS_SCRDIR" "/temp")
 
 ;; Do not write anything past this comment. This is where Emacs will
 ;; auto-generate custom variable definitions.
@@ -423,91 +446,79 @@ you should place your code here."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(ansi-color-names-vector
-   ["#272822" "#F92672" "#A6E22E" "#E6DB74" "#66D9EF" "#FD5FF0" "#A1EFE4" "#F8F8F2"])
- '(compilation-message-face (quote default))
+ '(custom-safe-themes
+   '("1ed5c8b7478d505a358f578c00b58b430dde379b856fbcb60ed8d345fc95594e" "fa2b58bb98b62c3b8cf3b6f02f058ef7827a8e497125de0254f56e373abee088" "a339f231e63aab2a17740e5b3965469e8c0b85eccdfb1f9dbd58a30bdad8562b" "001e4dbbdb8d01bb299c0244c489504d51ef5939ace24049079b377294786f7c" "1c8171893a9a0ce55cb7706766e57707787962e43330d7b0b6b0754ed5283cda" "07e3a1323eb29844e0de052b05e21e03ae2f55695c11f5d68d61fb5fed722dd2" "99ea831ca79a916f1bd789de366b639d09811501e8c092c85b2cb7d697777f93" "bc836bf29eab22d7e5b4c142d201bcce351806b7c1f94955ccafab8ce5b20208" "cb96a06ed8f47b07c014e8637bd0fd0e6c555364171504680ac41930cfe5e11e" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" "be9645aaa8c11f76a10bcf36aaf83f54f4587ced1b9b679b55639c87404e2499" "777a3a89c0b7436e37f6fa8f350cbbff80bcc1255f0c16ab7c1e82041b06fccd" "229c5cf9c9bd4012be621d271320036c69a14758f70e60385e87880b46d60780" "615123f602c56139c8170c153208406bf467804785007cdc11ba73d18c3a248b" default))
  '(evil-want-Y-yank-to-eol nil)
- '(fci-rule-color "#3C3D37" t)
- '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
- '(highlight-tail-colors
-   (quote
-    (("#3C3D37" . 0)
-     ("#679A01" . 20)
-     ("#4BBEAE" . 30)
-     ("#1DB4D0" . 50)
-     ("#9A8F21" . 60)
-     ("#A75B00" . 70)
-     ("#F309DF" . 85)
-     ("#3C3D37" . 100))))
- '(magit-diff-use-overlays nil)
  '(org-agenda-custom-commands
-   (quote
-    (("n" "All NEXT Items"
-      ((todo "PROJECT" nil)
-       (todo "NEXT" nil)
+   '(("n" "Show Next Items"
+      ((stuck "" nil)
+       (todo "WAITING" nil)
        (todo "ONGOING" nil)
-       (todo "WAITING" nil))
-      nil))))
+       (todo "NEXT"
+             ((org-agenda-files
+               '("~/Documents/MyOrgs/sprint.org"))))
+       (todo "NEXT"
+             ((org-agenda-files
+               '("~/Documents/MyOrgs/phd.org"))))
+       (todo "NEXT"
+             ((org-agenda-files
+               '("~/Documents/MyOrgs/oxyML.org"))))
+       (todo "NEXT"
+             ((org-agenda-files
+               '("~/Documents/MyOrgs/teaching.org"))))
+       (todo "NEXT"
+             ((org-agenda-files
+               '("~/Documents/MyOrgs/personal.org"))))
+       (todo "NEXT"
+             ((org-agenda-files
+               '("~/Documents/MyOrgs/social.org"))))
+       (todo "NEXT"
+             ((org-agenda-files
+               '("~/Dropbox/orgs/programming.org")))))
+      nil nil)))
  '(org-agenda-files
-   (quote
-    ("~/Dropbox/orgs/phd.org" "~/Dropbox/orgs/cooking.org" "~/Dropbox/orgs/teaching.org" "~/Dropbox/orgs/husband.org" "~/Dropbox/orgs/programming.org" "~/Dropbox/orgs/daily.org")))
- '(org-bullets-bullet-list (quote ("✙" "♱" "♰" "☥")))
+   '("~/Documents/MyOrgs/personal.org" "~/Documents/MyOrgs/phd.org" "~/Documents/MyOrgs/sprint.org" "~/Documents/MyOrgs/teaching.org" "~/Documents/MyOrgs/social.org" "~/Documents/MyOrgs/archives/cooking-archive.org"))
  '(org-capture-templates
-   (quote
-    (("h" "Husband Template")
+   '(("h" "Husband Template")
      ("ht" "Husband Todo" entry
-      (file+headline "~/Dropbox/orgs/husband.org" "In")
-      (file "~/Dropbox/orgs/templates/tpl-todo.txt"))
-     ("p" "PhD")
-     ("pt" "TODO PhD" entry
-      (file+headline "~/Dropbox/orgs/phd.org" "In")
-      (file "~/Dropbox/orgs/templates/tpl-todo.txt"))
+      (file+headline "~/Documents/MyOrgs/inbox.org" "Inbox")
+      (file "~/Documents/MyOrgs/templates/tpl-todo.txt"))
+     ("i" "Inbox" entry
+      (file+headline "~/Documents/MyOrgs/inbox.org" "Inbox")
+      (file "~/Documents/MyOrgs/templates/tpl-todo.txt"))
      ("c" "Cooking")
      ("ct" "Cooking Todo" entry
-      (file+headline "~/Dropbox/orgs/cooking.org" "Recipes")
-      (file "~/Dropbox/orgs/templates/food-todo.txt"))
+      (file+headline "~/Documents/MyOrgs/cooking.org" "Recipes")
+      (file "~/Documents/MyOrgs/templates/food-todo.txt"))
      ("t" "Teaching")
      ("tl" "New Lesson" entry
-      (file+headline "~/Dropbox/orgs/teaching.org" "In")
-      (file "~/Dropbox/orgs/templates/lesson-todo.txt"))
-     ("a" "Schedule an appointment" entry
-      (file "~/Dropbox/orgs/gcal.org")
-      (file "~/Dropbox/orgs/templates/gcal-todo.txt")))))
+      (file+headline "~/Documents/MyOrgs/teaching.org" "Lessons")
+      (file "~/Documents/MyOrgs/templates/lesson-todo.txt"))
+     ("r" "Reviews")
+     ("rm" "Morning Review" entry
+      (file "~/Documents/MyOrgs/reviews.org")
+      (file "~/Documents/MyOrgs/templates/morning-review.txt"))
+     ("re" "Evening Review" entry
+      (file "~/Documents/MyOrgs/reviews.org")
+      (file "~/Documents/MyOrgs/templates/evening-review.txt"))
+     ("rc" "Checkout Review" entry
+      (file "~/Documents/MyOrgs/reviews.org")
+      (file "~/Documents/MyOrgs/templates/checkout-review.txt"))
+     ("rw" "Weekly Review" entry
+      (file "~/Documents/MyOrgs/reviews.org")
+      (file "~/Documents/MyOrgs/templates/weekly-review.txt"))))
+ '(org-enforce-todo-dependencies t)
  '(org-log-into-drawer t)
  '(org-outline-path-complete-in-steps nil)
- '(org-refile-allow-creating-parent-nodes (quote confirm))
- '(org-refile-targets (quote ((org-agenda-files :level . 1))))
- '(org-refile-use-outline-path (quote file))
+ '(org-refile-allow-creating-parent-nodes 'confirm)
+ '(org-refile-targets '((org-agenda-files :maxlevel . 2)))
+ '(org-refile-use-outline-path 'file)
+ '(org-stuck-projects
+   '("TODO=\"PROJECT\""
+     ("NEXT" "NEXTACTION" "ONGOING")
+     nil ""))
  '(package-selected-packages
-   (quote
-    (lv request-deferred deferred calfw org-gcal yaml-mode zenburn-theme zen-and-art-theme white-sand-theme underwater-theme ujelly-theme twilight-theme twilight-bright-theme twilight-anti-bright-theme toxi-theme tao-theme tangotango-theme tango-plus-theme tango-2-theme sunny-day-theme sublime-themes subatomic256-theme subatomic-theme spacegray-theme soothe-theme soft-stone-theme soft-morning-theme soft-charcoal-theme smyx-theme seti-theme reverse-theme rebecca-theme railscasts-theme purple-haze-theme professional-theme planet-theme phoenix-dark-pink-theme phoenix-dark-mono-theme organic-green-theme omtose-phellack-theme oldlace-theme occidental-theme obsidian-theme noctilux-theme naquadah-theme mustang-theme monochrome-theme molokai-theme moe-theme minimal-theme material-theme majapahit-theme madhat2r-theme lush-theme light-soap-theme jbeans-theme jazz-theme ir-black-theme inkpot-theme heroku-theme hemisu-theme hc-zenburn-theme gruvbox-theme gruber-darker-theme grandshell-theme gotham-theme gandalf-theme flatui-theme flatland-theme farmhouse-theme exotica-theme espresso-theme dracula-theme django-theme darktooth-theme autothemer darkokai-theme darkmine-theme darkburn-theme dakrone-theme cyberpunk-theme color-theme-sanityinc-tomorrow color-theme-sanityinc-solarized clues-theme cherry-blossom-theme busybee-theme bubbleberry-theme birds-of-paradise-plus-theme badwolf-theme apropospriate-theme anti-zenburn-theme ample-zen-theme ample-theme alect-themes afternoon-theme solarized-theme vimrc-mode dactyl-mode eimp mmm-mode markdown-toc markdown-mode gh-md csv-mode phpunit phpcbf php-extras php-auto-yasnippets drupal-mode php-mode intero hlint-refactor hindent helm-hoogle haskell-snippets flycheck-haskell company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode wgrep smex ivy-hydra flyspell-correct-ivy counsel-projectile counsel swiper ivy flyspell-correct-helm flyspell-correct auto-dictionary slime-company slime common-lisp-snippets pdf-tools tablist yapfify xterm-color ws-butler winum which-key web-mode web-beautify volatile-highlights vi-tilde-fringe uuidgen use-package toc-org tagedit spaceline smeargle slim-mode shell-pop scss-mode sass-mode restart-emacs rainbow-delimiters pyvenv pytest pyenv-mode py-isort pug-mode popwin plantuml-mode pip-requirements persp-mode pcre2el paradox orgit org-projectile org-present org-pomodoro org-mime org-download org-bullets open-junk-file neotree multi-term move-text monokai-theme magit-gitflow macrostep lorem-ipsum livid-mode live-py-mode linum-relative link-hint less-css-mode json-mode js2-refactor js-doc indent-guide hy-mode hungry-delete htmlize hl-todo highlight-parentheses highlight-numbers highlight-indentation helm-themes helm-swoop helm-pydoc helm-projectile helm-mode-manager helm-make helm-gitignore helm-flx helm-descbinds helm-css-scss helm-company helm-c-yasnippet helm-ag google-translate golden-ratio gnuplot gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe git-gutter-fringe+ fuzzy flycheck-pos-tip flx-ido fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-magit evil-lisp-state evil-indent-plus evil-iedit-state evil-exchange evil-escape evil-ediff evil-args evil-anzu eval-sexp-fu eshell-z eshell-prompt-extras esh-help emmet-mode elisp-slime-nav dumb-jump diminish diff-hl define-word cython-mode company-web company-tern company-statistics company-auctex company-anaconda column-enforce-mode coffee-mode clean-aindent-mode auto-yasnippet auto-highlight-symbol auto-compile auctex-latexmk aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line ac-ispell)))
- '(pos-tip-background-color "#FFFACE")
- '(pos-tip-foreground-color "#272822")
- '(vc-annotate-background nil)
- '(vc-annotate-color-map
-   (quote
-    ((20 . "#F92672")
-     (40 . "#CF4F1F")
-     (60 . "#C26C0F")
-     (80 . "#E6DB74")
-     (100 . "#AB8C00")
-     (120 . "#A18F00")
-     (140 . "#989200")
-     (160 . "#8E9500")
-     (180 . "#A6E22E")
-     (200 . "#729A1E")
-     (220 . "#609C3C")
-     (240 . "#4E9D5B")
-     (260 . "#3C9F79")
-     (280 . "#A1EFE4")
-     (300 . "#299BA6")
-     (320 . "#2896B5")
-     (340 . "#2790C3")
-     (360 . "#66D9EF"))))
- '(vc-annotate-very-old-color nil)
- '(weechat-color-list
-   (quote
-    (unspecified "#272822" "#3C3D37" "#F70057" "#F92672" "#86C30D" "#A6E22E" "#BEB244" "#E6DB74" "#40CAE4" "#66D9EF" "#FB35EA" "#FD5FF0" "#74DBCD" "#A1EFE4" "#F8F8F2" "#F8F8F0"))))
+   '(ranger ess-smart-equals ess-R-data-view ctable ess julia-mode insert-shebang fish-mode company-shell fontawesome web-beautify livid-mode skewer-mode simple-httpd json-mode json-snatcher json-reformat js2-refactor multiple-cursors js2-mode js-doc company-tern tern coffee-mode csv-mode olivetti doom-themes flyspell-correct-helm flyspell-correct auto-dictionary org-ref key-chord ivy helm-bibtex parsebib biblio biblio-core company-quickhelp pos-tip intero flycheck hlint-refactor hindent helm-hoogle haskell-snippets company-ghci company-ghc ghc haskell-mode company-cabal cmm-mode yapfify pyvenv pytest pyenv-mode py-isort pip-requirements live-py-mode hy-mode dash-functional helm-pydoc cython-mode company-anaconda anaconda-mode pythonic web-mode tagedit slim-mode scss-mode sass-mode pug-mode helm-css-scss haml-mode emmet-mode company-web web-completion-data xterm-color smeargle shell-pop pdf-tools tablist orgit org-projectile org-category-capture org-present org-pomodoro alert log4e gntp org-mime org-download multi-term mmm-mode markdown-toc markdown-mode magit-gitflow magit-popup htmlize helm-gitignore helm-company helm-c-yasnippet gnuplot gitignore-mode gitconfig-mode gitattributes-mode git-timemachine git-messenger git-link git-gutter-fringe+ git-gutter-fringe fringe-helper git-gutter+ git-gutter gh-md fuzzy evil-magit magit git-commit with-editor transient eshell-z eshell-prompt-extras esh-help diff-hl company-statistics company-auctex company auto-yasnippet yasnippet auctex-latexmk auctex ac-ispell auto-complete ws-butler winum which-key volatile-highlights vi-tilde-fringe uuidgen use-package toc-org spaceline powerline restart-emacs request rainbow-delimiters popwin persp-mode pcre2el paradox spinner org-plus-contrib org-bullets open-junk-file neotree move-text macrostep lorem-ipsum linum-relative link-hint indent-guide hydra lv hungry-delete hl-todo highlight-parentheses highlight-numbers parent-mode highlight-indentation helm-themes helm-swoop helm-projectile projectile pkg-info epl helm-mode-manager helm-make helm-flx helm-descbinds helm-ag google-translate golden-ratio flx-ido flx fill-column-indicator fancy-battery eyebrowse expand-region exec-path-from-shell evil-visualstar evil-visual-mark-mode evil-unimpaired evil-tutor evil-surround evil-search-highlight-persist highlight evil-numbers evil-nerd-commenter evil-mc evil-matchit evil-lisp-state smartparens evil-indent-plus evil-iedit-state iedit evil-exchange evil-escape evil-ediff evil-args evil-anzu anzu evil goto-chg undo-tree eval-sexp-fu elisp-slime-nav dumb-jump f dash s diminish define-word column-enforce-mode clean-aindent-mode bind-map bind-key auto-highlight-symbol auto-compile packed aggressive-indent adaptive-wrap ace-window ace-link ace-jump-helm-line helm avy helm-core popup async)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
