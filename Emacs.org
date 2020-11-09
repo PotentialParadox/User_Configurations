@@ -1,3 +1,8 @@
+#+TITLE:Emacs Configurations
+#+PROPERTY: header-args:emacs-lisp :tangle ~/.emacs.d/init.el
+* Package Setup
+Initialize the archives
+#+begin_src emacs-lisp
 (package-initialize)
 (require 'package)
 (setq package-archives '(("melpa" . "https://melpa.org/packages/")
@@ -14,18 +19,27 @@
 
 (require 'use-package)
 (setq use-package-always-ensure t)
+#+end_src
 
+* Basic UI
+#+begin_src emacs-lisp
 (setq inhibit-startup-message t)
 (scroll-bar-mode -1) ; Disable Scrolling
 (tool-bar-mode -1) ; Disable the toolbar
 (tooltip-mode -1) ; Disable tooltips
 (set-fringe-mode 10) ; Give some breathing room
 (menu-bar-mode -1) ; Disable the menu bar
+#+end_src
 
+** Font
+#+begin_src emacs-lisp
 (set-face-attribute 'default nil :font "Fira Code" :height 115 :weight 'normal)
 (set-face-attribute 'fixed-pitch nil :font "Fira Code" :height 115 :weight 'normal)
 (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 115 :weight 'normal)
+#+end_src
 
+** Number Lines
+#+begin_src emacs-lisp
 (column-number-mode)
 (dolist (mode '(text-mode-hook
                 prog-mode-hook
@@ -34,23 +48,40 @@
 ;; Override some modes which derive from the above
 (dolist (mode '(org-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
+#+end_src
 
+** Theme
+#+begin_src emacs-lisp
+(use-package doom-themes
+  :init (load-theme 'doom-one-light t))
+#+end_src
+
+* Simple Quality of Life Improvements
+I have a habit of hitting escape to exit out of buffers. This allows me to do so.
+#+begin_src emacs-lisp
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
-
+#+end_src
+I have trouble remembering all the key commands. This package helps me follow.
+#+begin_src emacs-lisp
 (use-package which-key
   :init (which-key-mode)
   :diminish which-key-mode
   :config
   (setq which-key-idle-delay 0.3))
-
+#+end_src
+and this one makes it significantly easier to deal with all the parenthesis
+#+begin_src emacs-lisp
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
-
+#+end_src
+I hate the cluter from the backup files, so I send store them all in a custom directory
+#+begin_src emacs-lisp
 (setq backup-directory-alist '(("" . "~/.emacs.d/backup")))
+#+end_src
 
-(use-package doom-themes
-  :init (load-theme 'doom-one-light t))
-
+* General Keyboard
+#+begin_src emacs-lisp
+(use-package ace-window)
 (use-package general
   :config
   (general-create-definer rune/leader-keys
@@ -62,6 +93,7 @@
     "w"  '(:ignore t :which-key "windows")
     "wm" '(delete-other-windows :which-key "maximize window")
     "wd" '(delete-window :which-key "delete window")
+    "ww" '(ace-window :which-key "ace window")
     "f"  '(:ignore t :which-key "files")
     "fs" '(save-buffer :which-key "save buffer")
     "ff" '(find-file :which-key "find file")
@@ -71,11 +103,16 @@
     "TAB" '(next-buffer :which-key "next buffer")
     "c"  '(:ignore t :which-key "comment")
     "cc" '(comment-line :which-key "comment line")
-    "TAB" '(next-buffer :which-key "next buffer")
     "o"  '(:ignore t :which-key "open")
     "os" '(ansi-term :which-key "open ansi-term")
+    "b"  '(:ignore t :which-key "buffer")
+    "bb" '(switch-to-buffer :which-key "switch buffer")
+    "bd" '(kill-buffer :which-key "delete buffer")
     ))
+#+end_src
 
+* Ivy
+#+begin_src emacs-lisp
 (use-package ivy
   :diminish
   :bind (("C-s" . swiper)
@@ -99,7 +136,9 @@
   :init
   (ivy-rich-mode 1)
   )
-
+#+end_src
+Counsel needs to be installed for the following commands to work
+#+begin_src emacs-lisp
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
          ("C-x b" . counsel-ibuffer)
@@ -122,6 +161,35 @@
   ([remap describe-variable] . counsel-describe-variable)
   ([remap describe-key] . helpful-key))
 
+#+end_src
+
+* Projectile
+#+begin_src emacs-lisp
+(use-package elpy
+  :ensure t
+  :init
+  (elpy-enable))
+
+(use-package projectile
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  (when (file-directory-p "~/Projects/Code")
+    (setq projectile-project-search-path '("~/Projects/Code")))
+  (setq projectile-switch-project-action #'projectile-dired))
+
+(use-package counsel-projectile
+  :after projectile
+  :config (counsel-projectile-mode))
+(rune/leader-keys
+    "s"  '(:ignore t :which-key "search")
+    "sp" '(projectile-ripgrep :which-key "search project"))
+#+end_src
+
+*  Evil
+#+begin_src emacs-lisp
 (use-package evil
   :init
   (setq evil-want-integration t)
@@ -148,8 +216,15 @@
   (rune/leader-keys
     "wv" '(evil-window-vsplit :which-key "window vsplit")
     "ws" '(evil-window-split :which-key "window hsplit")
+    "TAB" '(evil-switch-to-windows-last-buffer :which-key "last buffer")
     )
 
+#+end_src
+
+#+RESULTS:
+
+* Magit
+#+begin_src emacs-lisp
 (use-package magit
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
@@ -159,7 +234,10 @@
 (rune/leader-keys
     "g"  '(:ignore t :which-key "git")
     "gs" '(magit-status :which-key "git status"))
+#+end_src
 
+* Org
+#+begin_src emacs-lisp
 (defun dt/org-mode-setup ()
   (org-indent-mode)
   (variable-pitch-mode 1)
@@ -211,3 +289,5 @@
 (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
 (add-to-list 'org-structure-template-alist '("sh" . "src sh"))
 (require 'org-tempo)
+#+end_src
+
