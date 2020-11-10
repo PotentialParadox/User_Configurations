@@ -44,13 +44,21 @@ Initialize the archives
 ** Number Lines
 #+begin_src emacs-lisp
 (column-number-mode)
-(dolist (mode '(text-mode-hook
-                prog-mode-hook
-                conf-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode 1))))
-;; Override some modes which derive from the above
-(dolist (mode '(org-mode-hook))
-  (add-hook mode (lambda () (display-line-numbers-mode 0))))
+(require 'display-line-numbers)
+(defcustom display-line-numbers-exempt-modes '(vterm-mode eshell-mode shell-mode term-mode ansi-term-mode org-mode)
+  "Major modes on which to disable the linum mode, exempts them from global requirement"
+  :group 'display-line-numbers
+  :type 'list
+  :version "green")
+
+(defun display-line-numbers--turn-on ()
+  "turn on line numbers but excempting certain majore modes defined in `display-line-numbers-exempt-modes'"
+  (if (and
+       (not (member major-mode display-line-numbers-exempt-modes))
+       (not (minibufferp)))
+      (display-line-numbers-mode)))
+
+(global-display-line-numbers-mode)
 #+end_src
 
 ** Theme
@@ -361,18 +369,27 @@ Counsel needs to be installed for the following commands to work
          ("TAB" . completion-at-point)))
 #+end_src
 
-#+RESULTS:
-: completion-at-point
+** Flycheck
+#+begin_src emacs-lisp
+(use-package flycheck
+  :after lsp-mode
+  :ensure t
+  :init (global-flycheck-mode))
+#+end_src
+Remove flymake
+#+begin_src emacs-lisp
+(delete '("\\.py?\\'" flymake-xml-init) flymake-allowed-file-name-masks)
+#+end_src
 
 ** PYTHON
 We are using the microsoft python server
 #+begin_src emacs-lisp
 (use-package lsp-python-ms
-  :ensure t
-  :init (setq lsp-python-ms-auto-install-server t)
-  :hook (python-mode . (lambda ()
-                          (require 'lsp-python-ms)
-                          (lsp))))  ; or lsp-deferred
+:ensure t
+:init (setq lsp-python-ms-auto-install-server t)
+:hook (python-mode . (lambda ()
+                        (require 'lsp-python-ms)
+                        (lsp))))  ; or lsp-deferred
 #+end_src
 
 #+RESULTS:
