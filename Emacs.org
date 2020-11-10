@@ -83,6 +83,23 @@ Here we try to provide margins to org-mode documents
   :init (load-theme 'doom-one-light t))
 #+end_src
 
+* File Operations
+** Dired
+# #+begin_src emacs-lisp
+# (use-package dired
+#   :ensure nil
+#   :defer 1
+#   :commands (dired dired-jump)
+#   :config
+#   (setq dired-listing-switches "-agho --group-directories-first"
+#         dired-omit-files "^\\.[^.].*"
+#         dired-omit-verbose nil)
+
+# (evil-collection-define-key 'normal 'dired-mode-map
+#     "h" 'dired-single-up-directory
+#     "l" 'dired-find-file))
+# #+end_src
+
 * Simple Quality of Life Improvements
 I have a habit of hitting escape to exit out of buffers. This allows me to do so.
 #+begin_src emacs-lisp
@@ -135,7 +152,7 @@ Company Mode
     "c"  '(:ignore t :which-key "comment")
     "cc" '(comment-line :which-key "comment line")
     "u"  '(:ignore t :which-key "use")
-    "us" '(ansi-term :which-key "ansi-term")
+    "us" '(term :which-key "terminal")
     "b"  '(:ignore t :which-key "buffer")
     "bb" '(switch-to-buffer :which-key "switch buffer")
     "bd" '(kill-buffer :which-key "delete buffer")
