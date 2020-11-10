@@ -21,9 +21,6 @@ Initialize the archives
 (setq use-package-always-ensure t)
 #+end_src
 
-#+RESULTS:
-: t
-
 * Basic UI
 #+begin_src emacs-lisp
 (setq inhibit-startup-message t)
@@ -39,6 +36,25 @@ Initialize the archives
 (set-face-attribute 'default nil :font "Fira Code" :height 110 :weight 'normal)
 (set-face-attribute 'fixed-pitch nil :font "Fira Code" :height 110 :weight 'normal)
 (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 110 :weight 'normal)
+#+end_src
+
+** Margins
+Here we try to provide margins to org-mode documents
+#+begin_src emacs-lisp
+(use-package perfect-margin
+  :custom
+  (perfect-margin-visible-width 128)
+  :config
+  ;; enable perfect-mode
+  (perfect-margin-mode t)
+  
+  ;; add additinal bding on margin area
+  (dolist (margin '("<left-margin> " "<right-margin> "))
+  (global-set-key (kbd (concat margin "<mouse-1>")) 'ignore)
+  (global-set-key (kbd (concat margin "<mouse-3>")) 'ignore)
+  (dolist (multiple '("" "double-" "triple-"))
+      (global-set-key (kbd (concat margin "<" multiple "wheel-up>")) 'mwheel-scroll)
+      (global-set-key (kbd (concat margin "<" multiple "wheel-down>")) 'mwheel-scroll))))
 #+end_src
 
 ** Number Lines
@@ -248,14 +264,6 @@ Counsel needs to be installed for the following commands to work
     "gs" '(magit-status :which-key "git status"))
 #+end_src
 
-** GitGutter
-#+begin_src emacs-lisp
-(use-package git-gutter
-  :init
-  (global-git-gutter-mode +1)
-)
-#+end_src
-
 * Org
 ** Basic Setup
 #+begin_src emacs-lisp
@@ -291,15 +299,6 @@ Counsel needs to be installed for the following commands to work
 
 ;; Make sure org-indent face is available
 (require 'org-indent)
-
-(defun dt/org-mode-visual-fill ()
-  (setq visual-fill-column-width 100
-        visual-fill-column-center-text t)
-  (visual-fill-column-mode 1))
-
-(use-package visual-fill-column
-  :defer t
-  :hook (org-mode . dt/org-mode-visual-fill))
 
 (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
 (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
@@ -382,6 +381,17 @@ Remove flymake
 #+end_src
 
 ** PYTHON
+*** Keyboar Shortcuts
+#+begin_src emacs-lisp
+(rune/leader-keys
+"p"  '(:ignore t :which-key "python")
+"pa" '(pyvenv-activate :which-key "pyvenv activate")
+)
+#+end_src
+
+#+RESULTS:
+
+*** LSP Server
 We are using the microsoft python server
 #+begin_src emacs-lisp
 (use-package lsp-python-ms
@@ -391,5 +401,3 @@ We are using the microsoft python server
                         (require 'lsp-python-ms)
                         (lsp))))  ; or lsp-deferred
 #+end_src
-
-#+RESULTS:
