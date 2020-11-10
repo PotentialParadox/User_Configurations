@@ -39,24 +39,14 @@ Initialize the archives
 #+end_src
 
 ** Margins
-Here we try to provide margins to org-mode documents
-#+begin_src emacs-lisp
-(use-package perfect-margin
-  :custom
-  (perfect-margin-visible-width 128)
-  :config
-  ;; enable perfect-mode
-  (perfect-margin-mode t)
-  
-  ;; add additinal bding on margin area
-  (dolist (margin '("<left-margin> " "<right-margin> "))
-  (global-set-key (kbd (concat margin "<mouse-1>")) 'ignore)
-  (global-set-key (kbd (concat margin "<mouse-3>")) 'ignore)
-  (dolist (multiple '("" "double-" "triple-"))
-      (global-set-key (kbd (concat margin "<" multiple "wheel-up>")) 'mwheel-scroll)
-      (global-set-key (kbd (concat margin "<" multiple "wheel-down>")) 'mwheel-scroll))))
-#+end_src
-
+FIXME: Here we trying to provide margins to org-mode documents however this breaks the ansi-terms
+# #+begin_src emacs-lisp
+# (use-package perfect-margin
+#   :custom
+#   (perfect-margin-visible-width 128)
+#   :config
+# )
+# #+end_src
 ** Number Lines
 #+begin_src emacs-lisp
 (column-number-mode)
