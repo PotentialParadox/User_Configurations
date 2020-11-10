@@ -223,7 +223,8 @@ Counsel needs to be installed for the following commands to work
 
 #+RESULTS:
 
-* Magit
+* Version Control
+** Magit
 #+begin_src emacs-lisp
 (use-package magit
   :custom
@@ -234,6 +235,14 @@ Counsel needs to be installed for the following commands to work
 (rune/leader-keys
     "g"  '(:ignore t :which-key "git")
     "gs" '(magit-status :which-key "git status"))
+#+end_src
+
+** GitGutter
+#+begin_src emacs-lisp
+(use-package git-gutter
+  :init
+  (global-git-gutter-mode +1)
+)
 #+end_src
 
 * Org
