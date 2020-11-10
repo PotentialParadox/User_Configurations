@@ -21,6 +21,9 @@ Initialize the archives
 (setq use-package-always-ensure t)
 #+end_src
 
+#+RESULTS:
+: t
+
 * Basic UI
 #+begin_src emacs-lisp
 (setq inhibit-startup-message t)
@@ -344,3 +347,32 @@ Counsel needs to be installed for the following commands to work
 
 #+RESULTS:
 
+* IDEs
+** LSP
+#+begin_src emacs-lisp
+(use-package lsp-mode
+  :commands (lsp lsp-deffered)
+  :hook ((python-mode julia-mode) . lsp-deferred)
+  :init
+  (setq lsp-keymap-prefix "C-c l")
+  :config
+  (lsp-enable-which-key-integration t)
+  :bind (:map lsp-mode-map
+         ("TAB" . completion-at-point)))
+#+end_src
+
+#+RESULTS:
+: completion-at-point
+
+** PYTHON
+We are using the microsoft python server
+#+begin_src emacs-lisp
+(use-package lsp-python-ms
+  :ensure t
+  :init (setq lsp-python-ms-auto-install-server t)
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-python-ms)
+                          (lsp))))  ; or lsp-deferred
+#+end_src
+
+#+RESULTS:
