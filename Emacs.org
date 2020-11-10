@@ -105,6 +105,10 @@ I hate the cluter from the backup files, so I send store them all in a custom di
 #+begin_src emacs-lisp
 (setq backup-directory-alist '(("" . "~/.emacs.d/backup")))
 #+end_src
+Company Mode
+#+begin_src emacs-lisp
+(add-hook 'after-init-hook 'global-company-mode)
+#+end_src
 
 * General Keyboard
 #+begin_src emacs-lisp
@@ -217,6 +221,7 @@ Counsel needs to be installed for the following commands to work
 
 *  Evil
 #+begin_src emacs-lisp
+(use-package undo-fu)
 (use-package evil
   :init
   (setq evil-want-integration t)
@@ -233,7 +238,10 @@ Counsel needs to be installed for the following commands to work
   (evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
   (evil-set-initial-state 'messages-buffer-mode 'normal)
-  (evil-set-initial-state 'dashboard-mode 'normal))
+  (evil-set-initial-state 'dashboard-mode 'normal)
+  :custom
+  (evil-undo-system (quote undo-fu))
+)
 
 (use-package evil-collection
   :after evil
@@ -267,6 +275,7 @@ Counsel needs to be installed for the following commands to work
 * Org
 ** Basic Setup
 #+begin_src emacs-lisp
+(use-package diminish)
 (defun dt/org-mode-setup ()
   (org-indent-mode)
   (variable-pitch-mode 1)
@@ -288,7 +297,12 @@ Counsel needs to be installed for the following commands to work
         org-src-preserve-indentation nil
         org-startup-folded 'content
         org-cycle-separator-lines 2))
+;; Autocomple
+(setq org-completion-use-ido t)
 #+end_src
+
+#+RESULTS:
+: t
 
 ** Visuals
 #+begin_src emacs-lisp
@@ -333,6 +347,16 @@ Counsel needs to be installed for the following commands to work
 )
 #+end_src
 
+*** Todos 
+#+begin_src emacs-lisp
+(setq org-todo-keywords
+      '((sequence "TODO(t)" "WAITING(w@)" "|" "DONE" "CANCELED")))
+#+end_src
+The @ symbol requires that the log into drawer be set
+#+begin_src emacs-lisp
+(setq org-log-into-drawer t)
+#+end_src
+
 *** Tag List
 #+begin_src emacs-lisp
 (setq org-tag-alist
@@ -353,6 +377,12 @@ Counsel needs to be installed for the following commands to work
 #+end_src
 
 #+RESULTS:
+
+** Quality of Life Improvments
+*** Save all org-files on refiling
+#+begin_src emacs-lisp
+(advice-add 'org-refile :after 'org-save-all-org-buffers)
+#+end_src
 
 * IDEs
 ** LSP
