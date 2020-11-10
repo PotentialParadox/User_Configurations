@@ -33,9 +33,9 @@ Initialize the archives
 
 ** Font
 #+begin_src emacs-lisp
-(set-face-attribute 'default nil :font "Fira Code" :height 115 :weight 'normal)
-(set-face-attribute 'fixed-pitch nil :font "Fira Code" :height 115 :weight 'normal)
-(set-face-attribute 'variable-pitch nil :font "Cantarell" :height 115 :weight 'normal)
+(set-face-attribute 'default nil :font "Fira Code" :height 110 :weight 'normal)
+(set-face-attribute 'fixed-pitch nil :font "Fira Code" :height 110 :weight 'normal)
+(set-face-attribute 'variable-pitch nil :font "Cantarell" :height 110 :weight 'normal)
 #+end_src
 
 ** Number Lines
@@ -103,8 +103,8 @@ I hate the cluter from the backup files, so I send store them all in a custom di
     "TAB" '(next-buffer :which-key "next buffer")
     "c"  '(:ignore t :which-key "comment")
     "cc" '(comment-line :which-key "comment line")
-    "o"  '(:ignore t :which-key "open")
-    "os" '(ansi-term :which-key "open ansi-term")
+    "u"  '(:ignore t :which-key "use")
+    "us" '(ansi-term :which-key "ansi-term")
     "b"  '(:ignore t :which-key "buffer")
     "bb" '(switch-to-buffer :which-key "switch buffer")
     "bd" '(kill-buffer :which-key "delete buffer")
@@ -237,6 +237,7 @@ Counsel needs to be installed for the following commands to work
 #+end_src
 
 * Org
+** Basic Setup
 #+begin_src emacs-lisp
 (defun dt/org-mode-setup ()
   (org-indent-mode)
@@ -259,8 +260,10 @@ Counsel needs to be installed for the following commands to work
         org-src-preserve-indentation nil
         org-startup-folded 'content
         org-cycle-separator-lines 2))
+#+end_src
 
-
+** Visuals
+#+begin_src emacs-lisp
 (use-package org-superstar
   :after org
   :hook (org-mode . org-superstar-mode)
@@ -285,9 +288,50 @@ Counsel needs to be installed for the following commands to work
 (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
 (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
 (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+#+end_src
 
+** Code
+#+begin_src emacs-lisp
 (add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
 (add-to-list 'org-structure-template-alist '("sh" . "src sh"))
 (require 'org-tempo)
+(rune/leader-keys
+"ob"  '(:ignore t :which-key "org-babel")
+"obt" '(org-babel-tangle :which-key "org tangle"))
 #+end_src
+
+#+RESULTS:
+
+** Agenda
+*** Keyboard Shortcuts
+#+begin_src emacs-lisp
+(rune/leader-keys
+"o"  '(:ignore t :which-key "org")
+"oa" '(org-agenda :which-key "org agenda")
+"od" '(org-deadline :which-key "org deadline")
+"os" '(org-schedule :which-key "org schedule")
+"ot" '(org-todo :which-key "org todo")
+)
+#+end_src
+
+*** Tag List
+#+begin_src emacs-lisp
+(setq org-tag-alist
+      '((:startgroup)
+	(:endgroup)
+	("short" . ?s)
+	("zoom" . ?z)
+	("important" . ?i)
+	("urgent" . ?u)
+	("email" . ?e)))
+#+end_src
+
+*** Agenda Files
+#+begin_src emacs-lisp
+(setq org-agenda-files
+      '("~/Documents/MyOrgs/phd.org")
+      )
+#+end_src
+
+#+RESULTS:
 
