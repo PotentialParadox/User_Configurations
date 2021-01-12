@@ -9,10 +9,13 @@ Initialize the archives
 			 ("org" . "https://orgmode.org/elpa/")
 			 ("elpa" . "https://elpa.gnu.org/packages/")
 			 ))
-
+(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
 (package-initialize)
+
 (unless package-archive-contents
   (package-refresh-contents))
+
+(setq package-load-list '(all))  
 
 (unless (package-installed-p 'use-package)
   (package-install 'use-package))
@@ -20,6 +23,9 @@ Initialize the archives
 (require 'use-package)
 (setq use-package-always-ensure t)
 #+end_src
+
+#+RESULTS:
+: t
 
 * Basic UI
 #+begin_src emacs-lisp
@@ -33,9 +39,9 @@ Initialize the archives
 
 ** Font
 #+begin_src emacs-lisp
-(set-face-attribute 'default nil :font "Fira Code" :height 100 :weight 'normal)
-(set-face-attribute 'fixed-pitch nil :font "Fira Code" :height 100 :weight 'normal)
-(set-face-attribute 'variable-pitch nil :font "Cantarell" :height 100 :weight 'normal)
+(set-face-attribute 'default nil :font "Fira Code" :height 150 :weight 'normal)
+(set-face-attribute 'fixed-pitch nil :font "Fira Code" :height 150 :weight 'normal)
+(set-face-attribute 'variable-pitch nil :font "Cantarell" :height 150 :weight 'normal)
 #+end_src
 
 #+RESULTS:
@@ -72,7 +78,7 @@ FIXME: Here we trying to provide margins to org-mode documents however this brea
 ** Theme
 #+begin_src emacs-lisp
 (use-package doom-themes
-  :init (load-theme 'doom-one-light t))
+  :init (load-theme 'doom-one t))
 #+end_src
 
 * File Operations
@@ -116,6 +122,14 @@ FIXME: Here we trying to provide margins to org-mode documents however this brea
              '(file))))
   (openwith-mode 1))
 #+end_src
+Open links in firefox
+#+begin_src emacs-lisp
+(setq browse-url-browser-function 'browse-url-generic
+      browse-url-generic-program "firefox")
+#+end_src
+
+#+RESULTS:
+: firefox
 
 * Simple Quality of Life Improvements
 I have a habit of hitting escape to exit out of buffers. This allows me to do so.
@@ -143,7 +157,10 @@ Company Mode
 #+begin_src emacs-lisp
 (add-hook 'after-init-hook 'global-company-mode)
 #+end_src
-
+Yasnippet
+#+begin_src emacs-lisp
+(setq yas-snipped-dirs "~/User_Configurations/snippets")
+#+end_src
 * General Keyboard
 #+begin_src emacs-lisp
 (use-package ace-window)
@@ -173,8 +190,12 @@ Company Mode
     "b"  '(:ignore t :which-key "buffer")
     "bb" '(switch-to-buffer :which-key "switch buffer")
     "bd" '(kill-buffer :which-key "delete buffer")
+    "br" '(rename-buffer :which-key "rename buffer")
     ))
 #+end_src
+
+#+RESULTS:
+: t
 
 * Ivy
 #+begin_src emacs-lisp
@@ -194,14 +215,19 @@ Company Mode
          :map ivy-reverse-i-search-map
          ("C-k" . ivy-previous-line)
          ("C-d" . ivy-reverse-i-search-kill))
+  :init
+  (setq ivy-use-virtual-buffers t)
   :config
-  (ivy-mode 1))
+  (ivy-mode 1)
+  )
 
 (use-package ivy-rich
   :init
   (ivy-rich-mode 1)
   )
 #+end_src
+
+
 Counsel needs to be installed for the following commands to work
 #+begin_src emacs-lisp
 (use-package counsel
@@ -319,6 +345,7 @@ Counsel needs to be installed for the following commands to work
   (diminish org-indent-mode))
 
 (use-package org
+  :ensure org-plus-contrib
   :defer t
   :hook (org-mode . dt/org-mode-setup)
   :config
@@ -337,7 +364,23 @@ Counsel needs to be installed for the following commands to work
 
 #+RESULTS:
 : t
+** References
+#+begin_src  emacs-lisp
+(use-package org-ref
+  :after org
+  :init
+  (setq org-ref-pdf-directory '("~/Documents/paper2/papers"))
+)
+#+end_src
 
+#+RESULTS:
+
+** Ignore Headings During Export
+This command requires that org mode be install with ensure org-plus-contrib
+#+begin_src emacs-lisp
+(require 'ox-extra)
+(ox-extras-activate '(ignore-headlines))
+#+end_src
 ** Visuals
 #+begin_src emacs-lisp
 (use-package org-superstar
@@ -384,7 +427,7 @@ Counsel needs to be installed for the following commands to work
 *** Todos 
 #+begin_src emacs-lisp
 (setq org-todo-keywords
-      '((sequence "TODO(t)" "WAITING(w@)" "|" "DONE" "CANCELED")))
+      '((sequence "TODO(t)" "APPOINTMENT(a)" "WAITING(w@)" "|" "DONE" "CANCELED")))
 #+end_src
 The @ symbol requires that the log into drawer be set
 #+begin_src emacs-lisp
@@ -400,23 +443,45 @@ The @ symbol requires that the log into drawer be set
 	("zoom" . ?z)
 	("important" . ?i)
 	("urgent" . ?u)
+	("easy" . ?e)
+	("medium" . ?m)
+	("hard" . ?h)
 	("email" . ?e)))
 #+end_src
+
 
 *** Agenda Files
 #+begin_src emacs-lisp
 (setq org-agenda-files
-      '("~/Documents/MyOrgs/phd.org")
-      )
+   (quote
+    ("~/Dropbox/org/phd.org"
+     "~/Dropbox/org/personal.org"
+     "~/Dropbox/org/oxyML.org"
+     )))
 #+end_src
 
 #+RESULTS:
+| ~/Documents/MyOrgs/phd.org | ~/Documents/MyOrgs/personal.org | ~/Documents/MyOrgs/oxyML.org |
 
 ** Quality of Life Improvments
 *** Save all org-files on refiling
 #+begin_src emacs-lisp
 (advice-add 'org-refile :after 'org-save-all-org-buffers)
 #+end_src
+
+** Exports
+#+begin_src emacs-lisp
+(setq org-file-apps
+   (quote
+    ((auto-mode . emacs)
+     (directory . emacs)
+     ("\\.mm\\'" . default)
+     ("\\.x?html?\\'" . "firefox %s")
+     ("\\.pdf\\'" . default))))
+#+end_src
+
+#+RESULTS:
+: ((auto-mode . emacs) (directory . emacs) (\.mm\' . default) (\.x?html?\' . firefox %s) (\.pdf\' . default))
 
 * LATEX
 Need to install auctex
@@ -475,4 +540,31 @@ If activated uses the microsoft python server
   :init
   (elpy-enable))
 #+end_src
+
+** R
+#+begin_src emacs-lisp
+(use-package ess
+    :ensure t
+    :init (require 'ess-site))
+
+(defun then_R_operator ()
+  "R - %>% operator or 'then' pipe operator"
+  (interactive)
+  (just-one-space 1)
+  (insert "%>%")
+  (reindent-then-newline-and-indent))
+(define-key ess-mode-map (kbd "C-|") 'then_R_operator)
+(define-key inferior-ess-mode-map (kbd "C-|") 'then_R_operator)
+#+end_src
+
+#+RESULTS:
+: then_R_operator
+
+** Julia
+#+begin_src  emacs-lisp
+(use-package julia-mode
+  :ensure t)
+#+end_src
+
+#+RESULTS:
 
