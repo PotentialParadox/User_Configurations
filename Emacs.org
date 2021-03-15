@@ -24,9 +24,6 @@ Initialize the archives
 (setq use-package-always-ensure t)
 #+end_src
 
-#+RESULTS:
-: t
-
 * Basic UI
 #+begin_src emacs-lisp
 (setq inhibit-startup-message t)
@@ -39,9 +36,9 @@ Initialize the archives
 
 ** Font
 #+begin_src emacs-lisp
-(set-face-attribute 'default nil :font "Fira Code" :height 150 :weight 'normal)
-(set-face-attribute 'fixed-pitch nil :font "Fira Code" :height 150 :weight 'normal)
-(set-face-attribute 'variable-pitch nil :font "Cantarell" :height 150 :weight 'normal)
+(set-face-attribute 'default nil :font "Fira Code" :height 120 :weight 'normal)
+(set-face-attribute 'fixed-pitch nil :font "Fira Code" :height 120 :weight 'normal)
+(set-face-attribute 'variable-pitch nil :font "Cantarell" :height 120 :weight 'normal)
 #+end_src
 
 #+RESULTS:
@@ -115,13 +112,13 @@ FIXME: Here we trying to provide margins to org-mode documents however this brea
                "png" "gif" "bmp" "tif" "jpeg")) ;; Removed jpg because Telega was
                                                 ;; causing feh to be opened...
              "feh"
-             '(file))
-      (list (openwith-make-extension-regexp
-             '("pdf"))
-             "zathura"
              '(file))))
   (openwith-mode 1))
 #+end_src
+
+#+RESULTS:
+: t
+
 Open links in firefox
 #+begin_src emacs-lisp
 (setq browse-url-browser-function 'browse-url-generic
@@ -160,7 +157,12 @@ Company Mode
 Yasnippet
 #+begin_src emacs-lisp
 (setq yas-snipped-dirs "~/User_Configurations/snippets")
+(yas-global-mode 1) 
 #+end_src
+
+#+RESULTS:
+: t
+
 * General Keyboard
 #+begin_src emacs-lisp
 (use-package ace-window)
@@ -191,6 +193,7 @@ Yasnippet
     "bb" '(switch-to-buffer :which-key "switch buffer")
     "bd" '(kill-buffer :which-key "delete buffer")
     "br" '(rename-buffer :which-key "rename buffer")
+    "is" '(yas-insert-snippet :which-key "insert snippet")
     ))
 #+end_src
 
@@ -332,22 +335,36 @@ Counsel needs to be installed for the following commands to work
     "gs" '(magit-status :which-key "git status"))
 #+end_src
 
+* PDF-Tools
+#+begin_src emacs-lisp
+(pdf-loader-install)
+#+end_src
+Now I never want things to automacally open veritcally, I want them to split vertically so
+#+begin_src  emacs-lisp
+(setq split-height-threshold nil)
+(setq split-width-threshold 0)
+(add-hook 'doc-view-mode-hook 'auto-revert-mode)
+(setq revert-without-query '(".pdf"))
+#+end_src
+
+#+RESULTS:
+| .pdf |
+
 * Org
 ** Basic Setup
 #+begin_src emacs-lisp
 (use-package diminish)
-(defun dt/org-mode-setup ()
-  (org-indent-mode)
-  (variable-pitch-mode 1)
-  (auto-fill-mode 0)
-  (visual-line-mode 1)
-  (setq evil-auto-indent nil)
-  (diminish org-indent-mode))
+;; (defun dt/org-mode-setup ()
+;;   (org-indent-mode)
+;;   (variable-pitch-mode 1)
+;;   (auto-fill-mode 0)
+;;   (visual-line-mode 1)
+;;   (setq evil-auto-indent nil)
+;;   (diminish org-indent-mode))
 
 (use-package org
   :ensure org-plus-contrib
   :defer t
-  :hook (org-mode . dt/org-mode-setup)
   :config
   (setq org-ellipsis " ▾"
         org-hide-emphasis-markers t
@@ -355,6 +372,7 @@ Counsel needs to be installed for the following commands to work
         org-src-tab-acts-natively t
         org-edit-src-content-indentation 0
         org-hide-block-startup nil
+	org-log-into-drawer t
         org-src-preserve-indentation nil
         org-startup-folded 'content
         org-cycle-separator-lines 2))
@@ -372,15 +390,22 @@ Counsel needs to be installed for the following commands to work
   (setq org-ref-pdf-directory '("~/Documents/paper2/papers"))
 )
 #+end_src
-
-#+RESULTS:
-
 ** Ignore Headings During Export
 This command requires that org mode be install with ensure org-plus-contrib
 #+begin_src emacs-lisp
 (require 'ox-extra)
 (ox-extras-activate '(ignore-headlines))
 #+end_src
+** Org-Noter
+#+begin_src emacs-lisp
+(use-package org-noter
+  :after org)
+(require 'org-noter)
+#+end_src
+
+#+RESULTS:
+: org-noter
+
 ** Visuals
 #+begin_src emacs-lisp
 (use-package org-superstar
@@ -539,7 +564,11 @@ If activated uses the microsoft python server
   :ensure t
   :init
   (elpy-enable))
+(add-hook 'elpy-mode-hook (lambda () (highlight-indentation-mode -1)))
 #+end_src
+
+#+RESULTS:
+| lambda | nil | (highlight-indentation-mode -1) |
 
 ** R
 #+begin_src emacs-lisp
