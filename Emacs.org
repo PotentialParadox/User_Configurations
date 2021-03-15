@@ -10,7 +10,6 @@ Initialize the archives
 			 ("elpa" . "https://elpa.gnu.org/packages/")
 			 ))
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
-(package-initialize)
 
 (unless package-archive-contents
   (package-refresh-contents))
@@ -502,12 +501,31 @@ The @ symbol requires that the log into drawer be set
      (directory . emacs)
      ("\\.mm\\'" . default)
      ("\\.x?html?\\'" . "firefox %s")
-     ("\\.pdf\\'" . default))))
+     ("\\.pdf\\'" . org-pdftools))))
 #+end_src
 
 #+RESULTS:
-: ((auto-mode . emacs) (directory . emacs) (\.mm\' . default) (\.x?html?\' . firefox %s) (\.pdf\' . default))
+: ((auto-mode . emacs) (directory . emacs) (\.mm\' . default) (\.x?html?\' . firefox %s) (\.pdf\' . org-pdftools))
 
+** Plantuml
+#+begin_src  emacs-lisp
+(setq org-plantuml-jar-path (expand-file-name "/home/dustin/plantuml.jar"))
+(add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+(org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
+#+end_src
+
+#+RESULTS:
+
+
+* PDFs
+#+begin_src emacs-lisp
+ (use-package pdf-tools
+    :ensure t
+    :config
+    (pdf-tools-install)
+    (setq TeX-view-program-selection '((output-pdf "pdf-tools")))
+    (setq TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view"))))
+#+end_src
 * LATEX
 Need to install auctex
 * IDEs
