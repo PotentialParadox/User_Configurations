@@ -10,7 +10,6 @@ Initialize the archives
 			 ("elpa" . "https://elpa.gnu.org/packages/")
 			 ))
 (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/") t)
-(package-initialize)
 
 (unless package-archive-contents
   (package-refresh-contents))
@@ -39,9 +38,9 @@ Initialize the archives
 
 ** Font
 #+begin_src emacs-lisp
-(set-face-attribute 'default nil :font "Fira Code" :height 150 :weight 'normal)
-(set-face-attribute 'fixed-pitch nil :font "Fira Code" :height 150 :weight 'normal)
-(set-face-attribute 'variable-pitch nil :font "Cantarell" :height 150 :weight 'normal)
+(set-face-attribute 'default nil :font "Fira Code" :height 100 :weight 'normal)
+(set-face-attribute 'fixed-pitch nil :font "Fira Code" :height 100 :weight 'normal)
+(set-face-attribute 'variable-pitch nil :font "Cantarell" :height 100 :weight 'normal)
 #+end_src
 
 #+RESULTS:
@@ -115,10 +114,6 @@ FIXME: Here we trying to provide margins to org-mode documents however this brea
                "png" "gif" "bmp" "tif" "jpeg")) ;; Removed jpg because Telega was
                                                 ;; causing feh to be opened...
              "feh"
-             '(file))
-      (list (openwith-make-extension-regexp
-             '("pdf"))
-             "zathura"
              '(file))))
   (openwith-mode 1))
 #+end_src
@@ -477,12 +472,31 @@ The @ symbol requires that the log into drawer be set
      (directory . emacs)
      ("\\.mm\\'" . default)
      ("\\.x?html?\\'" . "firefox %s")
-     ("\\.pdf\\'" . default))))
+     ("\\.pdf\\'" . org-pdftools))))
 #+end_src
 
 #+RESULTS:
-: ((auto-mode . emacs) (directory . emacs) (\.mm\' . default) (\.x?html?\' . firefox %s) (\.pdf\' . default))
+: ((auto-mode . emacs) (directory . emacs) (\.mm\' . default) (\.x?html?\' . firefox %s) (\.pdf\' . org-pdftools))
 
+** Plantuml
+#+begin_src  emacs-lisp
+(setq org-plantuml-jar-path (expand-file-name "/home/dustin/plantuml.jar"))
+(add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+(org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
+#+end_src
+
+#+RESULTS:
+
+
+* PDFs
+#+begin_src emacs-lisp
+ (use-package pdf-tools
+    :ensure t
+    :config
+    (pdf-tools-install)
+    (setq TeX-view-program-selection '((output-pdf "pdf-tools")))
+    (setq TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view"))))
+#+end_src
 * LATEX
 Need to install auctex
 * IDEs
