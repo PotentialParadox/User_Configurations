@@ -23,6 +23,23 @@ Initialize the archives
 (setq use-package-always-ensure t)
 #+end_src
 
+* MacOS Import Paths
+  #+begin_src emacs-lisp
+(defun set-exec-path-from-shell-PATH ()
+  "Set up Emacs' `exec-path' and PATH environment variable to match
+that used by the user's shell.
+
+This is particularly useful under Mac OS X and macOS, where GUI
+apps are not started from a shell."
+  (interactive)
+  (let ((path-from-shell (replace-regexp-in-string
+			  "[ \t\n]*$" "" (shell-command-to-string
+					  "$SHELL --login -c 'echo $PATH'"
+						    ))))
+    (setenv "PATH" path-from-shell)
+    (setq exec-path (split-string path-from-shell path-separator))))
+(set-exec-path-from-shell-PATH)
+  #+end_src
 * Basic UI
 #+begin_src emacs-lisp
 (setq inhibit-startup-message t)
@@ -32,16 +49,13 @@ Initialize the archives
 (set-fringe-mode 10) ; Give some breathing room
 (menu-bar-mode -1) ; Disable the menu bar
 #+end_src
-
 ** Font
-#+begin_src emacs-lisp
-(set-face-attribute 'default nil :font "Fira Code" :height 120 :weight 'normal)
-(set-face-attribute 'fixed-pitch nil :font "Fira Code" :height 120 :weight 'normal)
-(set-face-attribute 'variable-pitch nil :font "Cantarell" :height 120 :weight 'normal)
-#+end_src
-
-#+RESULTS:
-
+*** For linux
+ #+begin_src
+ (set-face-attribute 'default nil :font "Fira Code" :height 120 :weight 'normal)
+ (set-face-attribute 'fixed-pitch nil :font "Fira Code" :height 120 :weight 'normal)
+ (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 120 :weight 'normal)
+ #+end_src
 ** Margins
 FIXME: Here we trying to provide margins to org-mode documents however this breaks the ansi-terms
 # #+begin_src emacs-lisp
@@ -326,7 +340,9 @@ Counsel needs to be installed for the following commands to work
 (use-package magit
   :custom
   (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+#+end_src
 
+#+begin_src emacs-lisp
 (use-package evil-magit
   :after magit)
 (rune/leader-keys
