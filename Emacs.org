@@ -24,22 +24,22 @@ Initialize the archives
 #+end_src
 
 * MacOS Import Paths
-  #+begin_src emacs-lisp
-(defun set-exec-path-from-shell-PATH ()
-  "Set up Emacs' `exec-path' and PATH environment variable to match
-that used by the user's shell.
+#   #+begin_src emacs-lisp
+# (defun set-exec-path-from-shell-PATH ()
+#   "Set up Emacs' `exec-path' and PATH environment variable to match
+# that used by the user's shell.
 
-This is particularly useful under Mac OS X and macOS, where GUI
-apps are not started from a shell."
-  (interactive)
-  (let ((path-from-shell (replace-regexp-in-string
-			  "[ \t\n]*$" "" (shell-command-to-string
-					  "$SHELL --login -c 'echo $PATH'"
-						    ))))
-    (setenv "PATH" path-from-shell)
-    (setq exec-path (split-string path-from-shell path-separator))))
-(set-exec-path-from-shell-PATH)
-  #+end_src
+# This is particularly useful under Mac OS X and macOS, where GUI
+# apps are not started from a shell."
+#   (interactive)
+#   (let ((path-from-shell (replace-regexp-in-string
+# 			  "[ \t\n]*$" "" (shell-command-to-string
+# 					  "$SHELL --login -c 'echo $PATH'"
+# 						    ))))
+#     (setenv "PATH" path-from-shell)
+#     (setq exec-path (split-string path-from-shell path-separator))))
+# (set-exec-path-from-shell-PATH)
+#   #+end_src
 * Basic UI
 #+begin_src emacs-lisp
 (setq inhibit-startup-message t)
@@ -51,11 +51,12 @@ apps are not started from a shell."
 #+end_src
 ** Font
 *** For linux
- #+begin_src
+ #+begin_src emacs-lisp
  (set-face-attribute 'default nil :font "Fira Code" :height 120 :weight 'normal)
  (set-face-attribute 'fixed-pitch nil :font "Fira Code" :height 120 :weight 'normal)
  (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 120 :weight 'normal)
  #+end_src
+ #+RESULTS:
 ** Margins
 FIXME: Here we trying to provide margins to org-mode documents however this breaks the ansi-terms
 # #+begin_src emacs-lisp
@@ -88,8 +89,10 @@ FIXME: Here we trying to provide margins to org-mode documents however this brea
 ** Theme
 #+begin_src emacs-lisp
 (use-package doom-themes
-  :init (load-theme 'doom-one t))
+  :init (load-theme 'doom-one-light t))
 #+end_src
+
+#+RESULTS:
 
 * File Operations
 ** Dired
@@ -272,11 +275,6 @@ Counsel needs to be installed for the following commands to work
 
 * Projectile
 #+begin_src emacs-lisp
-(use-package elpy
-  :ensure t
-  :init
-  (elpy-enable))
-
 (use-package projectile
   :diminish projectile-mode
   :config (projectile-mode)
@@ -295,7 +293,7 @@ Counsel needs to be installed for the following commands to work
     "sp" '(projectile-ripgrep :which-key "search project"))
 #+end_src
 
-*  Evil
+* Evil
 #+begin_src emacs-lisp
 (use-package undo-fu)
 (use-package evil
@@ -349,21 +347,6 @@ Counsel needs to be installed for the following commands to work
     "g"  '(:ignore t :which-key "git")
     "gs" '(magit-status :which-key "git status"))
 #+end_src
-
-* PDF-Tools
-#+begin_src emacs-lisp
-(pdf-loader-install)
-#+end_src
-Now I never want things to automacally open veritcally, I want them to split vertically so
-#+begin_src  emacs-lisp
-(setq split-height-threshold nil)
-(setq split-width-threshold 0)
-(add-hook 'doc-view-mode-hook 'auto-revert-mode)
-(setq revert-without-query '(".pdf"))
-#+end_src
-
-#+RESULTS:
-| .pdf |
 
 * Org
 ** Basic Setup
@@ -528,10 +511,10 @@ The @ symbol requires that the log into drawer be set
 (setq org-plantuml-jar-path (expand-file-name "/home/dustin/plantuml.jar"))
 (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
 (org-babel-do-load-languages 'org-babel-load-languages '((plantuml . t)))
+(org-babel-do-load-languages 'org-babel-load-languages '((shell . t)))
 #+end_src
 
 #+RESULTS:
-
 
 * PDFs
 #+begin_src emacs-lisp
@@ -542,36 +525,46 @@ The @ symbol requires that the log into drawer be set
     (setq TeX-view-program-selection '((output-pdf "pdf-tools")))
     (setq TeX-view-program-list '(("pdf-tools" "TeX-pdf-tools-sync-view"))))
 #+end_src
+#+begin_src emacs-lisp
+(pdf-loader-install)
+#+end_src
+Now I never want things to automacally open veritcally, I want them to split vertically so
+#+begin_src  emacs-lisp
+(setq split-height-threshold nil)
+(setq split-width-threshold 0)
+(add-hook 'doc-view-mode-hook 'auto-revert-mode)
+(setq revert-without-query '(".pdf"))
+#+end_src
 * LATEX
 Need to install auctex
 * IDEs
 ** LSP
 #+begin_src emacs-lisp
-(use-package lsp-mode
-  :commands (lsp lsp-deffered)
-  :hook ((julia-mode) . lsp-deferred)
-  :init
-  (setq lsp-keymap-prefix "C-c l")
-  :config
-  (lsp-enable-which-key-integration t)
-  :bind (:map lsp-mode-map
-         ("TAB" . completion-at-point)))
+;; (use-package lsp-mode
+;;   :commands (lsp lsp-deffered)
+;;   :hook ((julia-mode) . lsp-deferred)
+;;   :init
+;;   (setq lsp-keymap-prefix "C-c l")
+;;   :config
+;;   (lsp-enable-which-key-integration t)
+;;   :bind (:map lsp-mode-map
+;;          ("TAB" . completion-at-point)))
 #+end_src
 
 ** Flycheck
-#+begin_src emacs-lisp
-(use-package flycheck
-  :after lsp-mode
-  :ensure t
-  :init (global-flycheck-mode))
-#+end_src
-Remove flymake
-#+begin_src emacs-lisp
-(delete '("\\.py?\\'" flymake-xml-init) flymake-allowed-file-name-masks)
-#+end_src
+# #+begin_src emacs-lisp
+# (use-package flycheck
+#   :after lsp-mode
+#   :ensure t
+#   :init (global-flycheck-mode))
+# #+end_src
+# Remove flymake
+# #+begin_src emacs-lisp
+# (delete '("\\.py?\\'" flymake-xml-init) flymake-allowed-file-name-masks)
+# #+end_src
 
 ** PYTHON
-*** Keyboar Shortcuts
+*** Keyboard Shortcuts
 #+begin_src emacs-lisp
 (rune/leader-keys
 "p"  '(:ignore t :which-key "python")
@@ -599,6 +592,21 @@ If activated uses the microsoft python server
   :init
   (elpy-enable))
 (add-hook 'elpy-mode-hook (lambda () (highlight-indentation-mode -1)))
+
+(setq elpy-rpc-virtualenv-path 'current)
+#+end_src
+
+#+RESULTS:
+: current
+
+
+We want to use ipython in order to have autoreload activated
+#+begin_src emacs-lisp
+(setq python-shell-interpreter "jupyter"
+      python-shell-interpreter-args "console --simple-prompt"
+      python-shell-prompt-detect-failure-warning nil)
+(add-to-list 'python-shell-completion-native-disabled-interpreters
+             "jupyter")
 #+end_src
 
 #+RESULTS:
